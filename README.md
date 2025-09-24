@@ -14,3 +14,8 @@ Aquí encontrarás todo el código, documentación y recursos necesarios para co
 - *👤 Pau Sampere Pla*
 
 ---
+
+## 🤔 Propuesta de ideas
+
+- *💡 App de tracking de libros y películas/series
+- *💡 App de viajes y lugares
