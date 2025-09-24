@@ -17,5 +17,7 @@ Aquí encontrarás todo el código, documentación y recursos necesarios para co
 
 ## 🤔 Propuesta de ideas
 
-- *💡 App de tracking de libros y películas/series
-- *💡 App de viajes y lugares
+- *💡 App de tracking de libros y películas/series*
+- *💡 App de viajes y lugares*
+
+---
