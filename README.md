@@ -1,1 +1,16 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/rxu1MK89)
+# 🚀 Proyecto Git
+
+Bienvenido al repositorio de *5 Noches con Eduardo*.  
+Aquí encontrarás todo el código, documentación y recursos necesarios para colaborar en equipo.
+
+---
+
+## 👥 Colaboradores
+
+- *👤 Pavel Naumov Mogylko*  
+- *👤 Noa Blanquer Cerdá*  
+- *👤 Andreu Sanchis Franco*  
+- *👤 Andrés Alcaraz Verdú*  
+- *👤 Pau Sampere Pla*
+
+---
