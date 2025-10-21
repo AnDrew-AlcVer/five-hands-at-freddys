@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balatro Clone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Menú Lateral -->
+        <div class="sidebar">
+            <div class="shop-section">
+                <div class="shop-header">
+                    <h2>TIENDA</h2>
+                    <p>¡Mejora tu partida!</p>
+                </div>
+                
+                <div class="round-info">
+                    <div class="score-section">
+                        <div class="round-score">
+                            <span class="label">Puntuación de ronda</span>
+                            <span class="score">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item blue">
+                            <span class="value" id="handsValue">4</span>
+                            <span class="label">Manos</span>
+                        </div>
+                        <div class="stat-item red">
+                            <span class="value" id="discardsValue">4</span>
+                            <span class="label">Descartes</span>
+                        </div>
+                    </div>
+                    
+                    <div class="money">
+                        <span class="amount">$0</span>
+                    </div>
+                </div>
+                
+                <div class="menu-buttons">
+                    <button class="menu-btn run-info">Info de Partida</button>
+                    <button class="menu-btn options">Opciones</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área Principal del Juego -->
+        <div class="main-game-area">
+            <!-- Zona de Jokers en la parte superior -->
+            <div class="jokers-area-top">
+                <h3 class="jokers-title">JOKERS</h3>
+                <div class="jokers-container">
+                    <div class="joker-slot" data-joker="1">
+                        <div class="joker-placeholder">
+                            <div class="joker-icon">🃏</div>
+                            <div class="joker-text">Slot 1</div>
+                        </div>
+                    </div>
+                    <div class="joker-slot" data-joker="2">
+                        <div class="joker-placeholder">
+                            <div class="joker-icon">🃏</div>
+                            <div class="joker-text">Slot 2</div>
+                        </div>
+                    </div>
+                    <div class="joker-slot" data-joker="3">
+                        <div class="joker-placeholder">
+                            <div class="joker-icon">🃏</div>
+                            <div class="joker-text">Slot 3</div>
+                        </div>
+                    </div>
+                    <div class="joker-slot" data-joker="4">
+                        <div class="joker-placeholder">
+                            <div class="joker-icon">🃏</div>
+                            <div class="joker-text">Slot 4</div>
+                        </div>
+                    </div>
+                    <div class="joker-slot" data-joker="5">
+                        <div class="joker-placeholder">
+                            <div class="joker-icon">🃏</div>
+                            <div class="joker-text">Slot 5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zona Central de Juego -->
+            <div class="play-area">
+                <div class="played-cards" id="playedCards">
+                    <div class="play-area-placeholder">
+                        <p>Selecciona cartas y haz clic en "JUGAR CARTAS"</p>
+                        <p class="play-hint">Las cartas aparecerán aquí</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles del Juego -->
+            <div class="game-controls">
+                <button id="playCardsBtn" class="play-button" disabled>
+                    JUGAR CARTAS
+                </button>
+                <button id="discardBtn" class="discard-button">
+                    DESCARTAR
+                </button>
+            </div>
+            
+            <!-- Cartas del Jugador -->
+            <div class="player-hand-container">
+                <div class="hand-info">
+                    <span class="hand-label">Tu mano:</span>
+                    <span class="selection-count" id="selectionCount">0/5 cartas seleccionadas</span>
+                </div>
+                <div class="player-hand" id="playerHand">
+                    <!-- Las cartas se generarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="right-panel">
+            <div class="deck-info">
+                <div class="deck-card">
+                    <span class="deck-count">44/52</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
