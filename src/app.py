@@ -1,9 +1,18 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 import random
+import os
+import json
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app)
+
+def load_jokers():
+    jokers_path = os.path.join(app.root_path, 'data', 'jokers.json')
+    with open(jokers_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+JOKERS = load_jokers() 
 
 def generate_full_deck():
     """Genera un mazo completo de 52 cartas"""
@@ -25,60 +34,19 @@ def card_exists_in_list(card, card_list):
     """Verifica si una carta ya existe en una lista"""
     return any(c['suit'] == card['suit'] and c['value'] == card['value'] for c in card_list)
 
-# Lista de Jokers disponibles
-JOKERS = [
-    {
-        'id': 'joker1',
-        'name': 'Joker Multiplicador',
-        'description': 'Multiplica puntos x2',
-        'price': 5,
-        'effect': 'multiplier',
-        'value': 2
-    },
-    {
-        'id': 'joker2',
-        'name': 'Joker Bonus',
-        'description': '+100 puntos por mano',
-        'price': 7,
-        'effect': 'bonus',
-        'value': 10
-    },
-    {
-        'id': 'joker3',
-        'name': 'Joker Fortuna',
-        'description': '+1 descarte',
-        'price': 6,
-        'effect': 'extra_discard',
-        'value': 1
-    },
-    {
-        'id': 'joker4',
-        'name': 'Joker Estratega',
-        'description': '+1 mano',
-        'price': 8,
-        'effect': 'extra_hand',
-        'value': 1
-    },
-    {
-        'id': 'joker5',
-        'name': 'Joker Dorado',
-        'description': '+50% dinero por ronda',
-        'price': 10,
-        'effect': 'money_multiplier',
-        'value': 1.5
-    }
-]
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static', 'images'), 'favicon.gif', mimetype='image/gif')
 
 @app.route('/admin')
 def admin():
-    """Servir la página de administración"""
-    return render_template('admin.html')
+    return render_template('html/admin.html')
 
 
 @app.route('/')
 def index():
     """Servir la página principal"""
-    return render_template('index.html')
+    return render_template('html/index.html')
 
 @app.route('/init_game', methods=['POST'])
 def init_game():
@@ -94,7 +62,7 @@ def init_game():
                 'score': 0,
                 'hands': 4,
                 'discards': 4,
-                'money': 0,
+                'money': 10,
                 'shopOpened': False
             },
             'message': 'Juego inicializado'
