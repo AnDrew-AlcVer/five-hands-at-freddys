@@ -36,7 +36,7 @@ def card_exists_in_list(card, card_list):
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static', 'images'), 'favicon.gif', mimetype='image/gif')
+    return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.gif', mimetype='image/gif')
 
 @app.route('/admin')
 def admin():
@@ -48,8 +48,8 @@ def index():
     """Servir la página principal"""
     return render_template('html/index.html')
 
-@app.route('/init_game', methods=['POST'])
-def init_game():
+@app.route('/inicializar_juego', methods=['POST'])
+def inicializar_juego():
     """Inicializar el juego"""
     try:
         full_deck = generate_full_deck()
@@ -70,8 +70,8 @@ def init_game():
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error inicializando juego: {str(e)}'})
 
-@app.route('/draw_cards', methods=['POST'])
-def draw_cards():
+@app.route('/robar_cartas', methods=['POST'])
+def robar_cartas():
     """Robar nuevas cartas del mazo - Evita duplicados con cartas ya jugadas"""
     try:
         data = request.get_json()
@@ -103,8 +103,8 @@ def draw_cards():
         return jsonify({'success': False, 'message': f'Error robando cartas: {str(e)}'})
 
 
-@app.route('/play_cards', methods=['POST'])
-def play_cards():
+@app.route('/jugar_cartas', methods=['POST'])
+def jugar_cartas():
     """Procesar cartas jugadas - Devuelve puntos y actualiza el estado del juego"""
     try:
         data = request.get_json()
@@ -130,8 +130,8 @@ def play_cards():
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error procesando cartas: {str(e)}'})
 
-@app.route('/discard_cards', methods=['POST'])
-def discard_cards():
+@app.route('/descartar_cartas', methods=['POST'])
+def descartar_cartas():
     """Procesar descarte de cartas - Actualiza el estado del juego"""
     try:
         data = request.get_json()
@@ -155,8 +155,8 @@ def discard_cards():
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error descartando cartas: {str(e)}'})
 
-@app.route('/get_shop_jokers', methods=['POST'])
-def get_shop_jokers():
+@app.route('/obtener_jokers_tienda', methods=['POST'])
+def obtener_jokers_tienda():
     """Obtener 2 jokers aleatorios para la tienda"""
     try:
         game_state = request.get_json().get('gameState', {})
@@ -174,8 +174,8 @@ def get_shop_jokers():
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error obteniendo jokers: {str(e)}'})
 
-@app.route('/buy_joker', methods=['POST'])
-def buy_joker():
+@app.route('/comprar_joker', methods=['POST'])
+def comprar_joker():
     """Comprar un joker de la tienda"""
     try:
         data = request.get_json()
