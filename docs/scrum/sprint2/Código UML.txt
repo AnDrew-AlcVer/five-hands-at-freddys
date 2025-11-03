@@ -1,0 +1,41 @@
+@startuml
+
+class User {
+  - id : int
+  - username : String
+  - email : String
+  - passwordHash : String
+  - admin : bool
+  - saveGame : int
+  + login()
+  + register()
+}
+
+class SavedGame {
+  - id : int
+  - score : int
+  - handsLeft : int
+  - discardsLeft : int
+  - money : int
+  - actualHand : String
+  - playedCards : String
+  - numPlayedCards : int
+  - purchasedJokers : String
+  - openStore : bool
+  - jokersStore : String
+  + save()
+  + load()
+}
+
+class Leaderboard {
+  - id : int
+  - userId : int
+  - maxScore : int
+  + updateScore()
+  + getTopScores()
+}
+
+User "1" -- "1" SavedGame : tiene >
+User "1" -- "1" Leaderboard : aparece en >
+
+@enduml
