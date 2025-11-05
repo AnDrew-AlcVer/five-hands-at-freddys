@@ -1,11 +1,9 @@
-// Verificar sesión al cargar la página
 window.addEventListener('DOMContentLoaded', async () => {
     await verificarSesion();
     await verificarPartidaGuardada();
     await cargarLeaderboard();
 });
 
-// Verificar si hay sesión activa
 async function verificarSesion() {
     try {
         const response = await fetch('/verificar_sesion');
@@ -23,7 +21,6 @@ async function verificarSesion() {
     }
 }
 
-// Verificar si hay partida guardada
 async function verificarPartidaGuardada() {
     try {
         const response = await fetch('/verificar_partida_guardada');
@@ -33,7 +30,6 @@ async function verificarPartidaGuardada() {
             const continueBtn = document.getElementById('continueBtn');
             continueBtn.classList.remove('d-none');
             
-            // Mostrar info de la partida guardada como subtítulo
             const gameInfo = data.game_info;
             continueBtn.innerHTML = `▶️ Continuar partida<br><small class="text-light-50">Puntuación: ${gameInfo.score} | Dinero: $${gameInfo.money}</small>`;
         }

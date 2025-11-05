@@ -70,36 +70,29 @@ def register():
         
         conn = get_db_connection()
         
-        # Verificar si el usuario ya existe
         existing_user = conn.execute('SELECT id FROM users WHERE username = ? OR email = ?', 
                                      (username, email)).fetchone()
         if existing_user:
             conn.close()
             return jsonify({'success': False, 'message': 'Usuario o email ya registrado'})
         
-        # Crear usuario
         password_hash = hash_password(password)
-        cursor = conn.execute('INSERT INTO users (username, email, password_hash, admin) VALUES (?, ?, ?, ?)',
-                             (username, email, password_hash, 0))
-        user_id = cursor.lastrowid
         
-        # Crear partida inicial vacía
         cursor = conn.execute('''
-            INSERT INTO saved_games (user_id, score, hands_left, discards_left, money, actual_hand, played_cards, num_played_cards)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (user_id, 0, 4, 4, 10, '[]', '[]', 9))
+            INSERT INTO saved_games (score, hands_left, discards_left, money, actual_hand, played_cards, num_played_cards)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (0, 4, 4, 10, '[]', '[]', 9))
         game_id = cursor.lastrowid
         
-        # Actualizar usuario con save_game
-        conn.execute('UPDATE users SET save_game = ? WHERE id = ?', (game_id, user_id))
+        cursor = conn.execute('INSERT INTO users (username, email, password_hash, admin, save_game) VALUES (?, ?, ?, ?, ?)',
+                             (username, email, password_hash, 0, game_id))
+        user_id = cursor.lastrowid
         
-        # Crear entrada en leaderboard
         conn.execute('INSERT INTO leaderboard (user_id, max_score) VALUES (?, ?)', (user_id, 0))
         
         conn.commit()
         conn.close()
         
-        # Login automático después del registro
         session['user_id'] = user_id
         session['username'] = username
         session['admin'] = 0

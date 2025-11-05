@@ -158,12 +158,8 @@ class Juego {
 
 if (typeof window !== 'undefined') {
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM cargado, inicializando juego...');
-            window.juego = new Juego();
-        });
+        document.addEventListener('DOMContentLoaded', () => window.juego = new Juego());
     } else {
-        console.log('DOM ya cargado, inicializando juego inmediatamente...');
         window.juego = new Juego();
     }
 }
