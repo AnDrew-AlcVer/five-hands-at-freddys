@@ -40,10 +40,88 @@ class AccionesJuego {
         this.juego.limpiarSeleccion();
         this.juego.gestorCartas.removerCartasDeMano(cartasJugar);
         this.juego.gestorCartas.robarNuevasCartas(cartasJugar.length);
-        
+
+        if (resultado.roundWon) {
+            setTimeout(() => {
+                this.mostrarMensajeVictoria();
+            }, 2000);
+        } else {
+            setTimeout(() => {
+                this.juego.gestorCartas.limpiarCartasJugadasConAnimacion();
+            }, 2000);
+        }
+
+        (async () => {
+            const r = await fetch('/guardar_partida', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    gameState: this.juego.estadoJuego,
+                    actual_hand: this.juego.manoJugador,
+                    played_cards: this.juego.cartasJugadas,
+                    num_played_cards: this.juego.totalCartasUsadas,
+                    purchased_jokers: this.juego.jokersPropiedad,
+                    open_store: this.juego.estadoJuego.shopOpened || false,
+                    jokers_store: this.juego.jokersTienda
+                })
+            }).catch(() => {});
+        })();
+    }
+
+    mostrarMensajeVictoria() {
+        const mensaje = document.createElement('div');
+        mensaje.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            font-size: 2.5em;
+            font-weight: bold;
+            z-index: 10000;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 3px solid #fff;
+        `;
+        mensaje.innerHTML = `
+            🎉 ¡RONDA GANADA! 🎉<br>
+            <span style="font-size: 0.5em; display: block; margin-top: 15px;">
+                Objetivo superado: ${this.juego.estadoJuego.score} / ${this.juego.estadoJuego.blindTarget}
+            </span>
+        `;
+        document.body.appendChild(mensaje);
+
         setTimeout(() => {
-            this.juego.gestorCartas.limpiarCartasJugadasConAnimacion();
-        }, 2000);
+            mensaje.remove();
+            this.avanzarRonda();
+        }, 3000);
+    }
+    
+    async avanzarRonda() {
+        const nextRound = (this.juego.estadoJuego.round || 1) + 1;
+        
+        const respuesta = await fetch('/inicializar_juego', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ round: nextRound })
+        });
+        
+        const resultado = await respuesta.json();
+        if (resultado.success) {
+            this.juego.estadoJuego = resultado.gameState;
+            this.juego.manoJugador = resultado.hand.map((carta, indice) => ({
+                ...carta,
+                id: indice
+            }));
+            this.juego.totalCartasUsadas = this.juego.manoJugador.length;
+            this.juego.cartasJugadas = [];
+            this.juego.gestorCartas.renderizarManoJugador();
+            this.juego.gestorCartas.limpiarCartasJugadas();
+            this.juego.actualizarUI();
+        }
     }
 
     manejarJugarCartasLocal(cartasJugar) {
@@ -106,7 +184,7 @@ class AccionesJuego {
                 await this.juego.gestorCartas.robarNuevasCartasConAnimacion(cartasDescartar.length);
             }
         } catch (error) {
-            alert('Error de conexión con el servidor');
+            console.error('❌ Error de conexión con el servidor:', error);
         }
     }
 

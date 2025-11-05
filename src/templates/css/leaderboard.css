@@ -1,0 +1,144 @@
+/* Estilos del leaderboard */
+.leaderboard-card {
+    min-height: calc(75vh + 10px);
+    max-height: calc(90vh + 10px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(49, 43, 121, 0.9) !important;
+    border: 1px solid rgba(123, 104, 238, 0.35) !important;
+    border-radius: 16px;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.leaderboard-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.leaderboard-card .card-header {
+    background-color: transparent;
+    border: 0;
+    padding: 1.25rem 1.5rem !important;
+    flex-shrink: 0;
+    margin: 0 !important;
+}
+
+#leaderboardList {
+    flex: 1;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    background-color: transparent !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: block !important;
+}
+
+#leaderboardList:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#leaderboardList tbody {
+    background-color: transparent !important;
+    width: 100% !important;
+    display: table !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+}
+
+#leaderboardList tr {
+    width: 100% !important;
+    display: table-row !important;
+}
+
+#leaderboardList td {
+    padding: 1rem 1.5rem !important;
+    vertical-align: middle !important;
+    border: none !important;
+    display: table-cell !important;
+    font-size: 1rem !important;
+}
+
+#leaderboardList td:nth-child(1) {
+    width: 15% !important;
+    text-align: center !important;
+}
+
+#leaderboardList td:nth-child(2) {
+    width: 55% !important;
+}
+
+#leaderboardList td:nth-child(3) {
+    width: 30% !important;
+    text-align: right !important;
+}
+
+#leaderboardList tbody tr.top1,
+#leaderboardList tbody tr.top2,
+#leaderboardList tbody tr.top3 {
+    padding-left: 0 !important;
+}
+
+#leaderboardList tbody tr.top1 td:first-child,
+#leaderboardList tbody tr.top2 td:first-child,
+#leaderboardList tbody tr.top3 td:first-child {
+    padding-left: 1rem !important;
+}
+
+#leaderboardList tbody tr.top1 {
+    background: linear-gradient(90deg, rgba(241, 196, 15, 0.15), rgba(241, 196, 15, 0.05)) !important;
+    border-left: 5px solid #f1c40f !important;
+}
+
+#leaderboardList tbody tr.top1 td {
+    background-color: transparent !important;
+}
+
+#leaderboardList tbody tr.top1 td:first-child {
+    color: #f1c40f !important;
+}
+
+#leaderboardList tbody tr.top2 {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.12), rgba(192, 192, 192, 0.04)) !important;
+    border-left: 5px solid #c0c0c0 !important;
+}
+
+#leaderboardList tbody tr.top2 td {
+    background-color: transparent !important;
+}
+
+#leaderboardList tbody tr.top2 td:first-child {
+    color: #c0c0c0 !important;
+}
+
+#leaderboardList tbody tr.top3 {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.12), rgba(205, 127, 50, 0.04)) !important;
+    border-left: 5px solid #cd7f32 !important;
+}
+
+#leaderboardList tbody tr.top3 td {
+    background-color: transparent !important;
+}
+
+#leaderboardList tbody tr.top3 td:first-child {
+    color: #cd7f32 !important;
+}
+
+#leaderboardList tbody tr.row-odd {
+    background-color: rgba(79, 70, 140, 0.25) !important;
+}
+
+#leaderboardList tbody tr.row-odd td {
+    background-color: transparent !important;
+}
+
+#leaderboardList tbody tr.row-even {
+    background-color: rgba(79, 70, 140, 0.45) !important;
+}
+
+#leaderboardList tbody tr.row-even td {
+    background-color: transparent !important;
+}

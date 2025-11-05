@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balatro Night - Login</title>
+    <link rel="stylesheet" href="/templates/css/base.css">
+    <link rel="stylesheet" href="/templates/css/menu.css">
+    <link rel="stylesheet" href="/templates/css/login.css">
+    <link rel="stylesheet" href="/templates/css/responsive.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        <h2 class="login-title">BALATRO</h2>
+        
+        <div class="round-info">
+            <p class="login-subtitle" id="formTitle">Inicia sesión para jugar</p>
+            
+            <div id="errorMessage" class="message error"></div>
+            <div id="successMessage" class="message success"></div>
+
+            <!-- Formulario de Login -->
+            <form id="loginForm">
+                <label for="username">Usuario</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+
+                <div class="menu-buttons">
+                    <button type="submit" class="menu-btn run-info" id="submitBtn">INICIAR SESIÓN</button>
+                </div>
+            </form>
+
+            <!-- Formulario de Registro (oculto por defecto) -->
+            <form id="registerForm" style="display: none;">
+                <label for="regUsername">Usuario</label>
+                <input type="text" id="regUsername" name="username" required autocomplete="username">
+
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" name="email" required autocomplete="email">
+
+                <label for="regPassword">Contraseña</label>
+                <input type="password" id="regPassword" name="password" required autocomplete="new-password">
+
+                <label for="regPasswordConfirm">Confirmar Contraseña</label>
+                <input type="password" id="regPasswordConfirm" name="passwordConfirm" required autocomplete="new-password">
+
+                <div class="menu-buttons">
+                    <button type="submit" class="menu-btn options" id="registerBtn">REGISTRARSE</button>
+                </div>
+            </form>
+
+            <div class="toggle-text">
+                <span id="toggleText">¿No tienes cuenta? <a id="toggleLink">Regístrate</a></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

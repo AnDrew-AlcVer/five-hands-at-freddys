@@ -4,28 +4,28 @@ class GestorJokers {
     }
 
     async abrirTienda() {
+        if (!this.juego.estadoJuego) {
+            let intentos = 0;
+            while (!this.juego.estadoJuego && intentos < 30) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                intentos++;
+            }
+            if (!this.juego.estadoJuego) return;
+        }
+        
         if (!this.juego.estadoJuego.shopOpened) {
-            try {
-                const respuesta = await fetch('/obtener_jokers_tienda', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        gameState: this.juego.estadoJuego
-                    })
-                });
-                
-                const resultado = await respuesta.json();
-                
-                if (resultado.success) {
-                    this.juego.jokersTienda = resultado.jokers;
-                    this.juego.estadoJuego = resultado.gameState;
-                } else {
-                    alert(resultado.message);
-                    return;
-                }
-            } catch (error) {
+            const respuesta = await fetch('/obtener_jokers_tienda', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ gameState: this.juego.estadoJuego })
+            });
+            
+            const resultado = await respuesta.json();
+            
+            if (resultado.success) {
+                this.juego.jokersTienda = resultado.jokers;
+                this.juego.estadoJuego = resultado.gameState;
+            } else {
                 return;
             }
         }
@@ -124,29 +124,32 @@ class GestorJokers {
         document.body.appendChild(modal);
     }
 
-    comprarJoker(idJoker) {
-        const joker = this.juego.jokersTienda.find(j => j.id === idJoker);
+    comprarJoker(joker) {
+        if (this.juego.estadoJuego.money < joker.price) return;
         
-        if (!joker) return;
+        if (this.juego.jokersPropiedad.length >= 5) return;
         
-        if (this.juego.estadoJuego.money < joker.price) {
-            alert('No tienes suficiente dinero');
-            return;
-        }
-        
-        if (this.juego.jokersPropiedad.length >= 5) {
-            alert('Ya tienes 5 jokers. No puedes comprar más.');
-            return;
-        }
-        
-        this.juego.estadoJuego.money -= joker.price;
         this.juego.jokersPropiedad.push(joker);
+        this.juego.estadoJuego.money -= joker.price;
+        this.juego.jokersTienda = this.juego.jokersTienda.filter(j => j.name !== joker.name);
         
-        this.juego.actualizarUI();
         this.renderizarJokers();
-        
-        this.cerrarTienda();
         this.mostrarModalTienda();
+        this.juego.actualizarUI();
+        
+        fetch('/guardar_partida', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                gameState: this.juego.estadoJuego,
+                actual_hand: this.juego.manoJugador,
+                played_cards: this.juego.cartasJugadas,
+                num_played_cards: this.juego.totalCartasUsadas,
+                purchased_jokers: this.juego.jokersPropiedad,
+                open_store: this.juego.estadoJuego.shopOpened || false,
+                jokers_store: this.juego.jokersTienda
+            })
+        }).catch(() => {});
     }
 
     cerrarTienda() {

@@ -1,0 +1,14 @@
+/* Estilos base y globales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 50%, #0f0f2a 100%);
+    color: white;
+    overflow: hidden;
+    height: 100vh;
+}

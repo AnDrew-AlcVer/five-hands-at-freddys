@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balatro Clone</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="/templates/css/base.css">
+    <link rel="stylesheet" href="/templates/css/juego.css">
+    <link rel="stylesheet" href="/templates/css/responsive.css">
 </head>
 <body>
     <div class="game-container">
@@ -17,11 +19,9 @@
                 </div>
                 
                 <div class="round-info">
-                    <div class="score-section">
-                        <div class="round-score">
-                            <span class="label">Puntuación de ronda</span>
-                            <span class="score">0</span>
-                        </div>
+                    <div class="round-score">
+                        <span class="label">Puntuación de ronda</span>
+                        <span class="score">0</span>
                     </div>
                     
                     <div class="stats-row">
@@ -125,12 +125,14 @@
                     <span class="deck-count">52/52</span>
                 </div>
             </div>
-        </div>
+                </div>
     </div>
 
+    <script src="{{ url_for('static', filename='js/sesion.js') }}"></script>
     <script src="{{ url_for('static', filename='js/cartas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jokers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/accionesJuego.js') }}"></script>
     <script src="{{ url_for('static', filename='js/juego.js') }}"></script>
 </body>
 </html>
+```

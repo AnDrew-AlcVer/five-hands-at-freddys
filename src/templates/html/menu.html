@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balatro Night - Menú Principal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/templates/css/base.css">
+    <link rel="stylesheet" href="/templates/css/menu.css">
+    <link rel="stylesheet" href="/templates/css/leaderboard.css">
+    <link rel="stylesheet" href="/templates/css/responsive.css">
+</head>
+<body class="menu-page">
+    <div class="container py-4">
+        <div class="row justify-content-center py-4 py-lg-5" style="height: 100%">
+            <div class="col-12 col-xl-11">
+                <div class="row g-4 align-items-center">
+                    <!-- Columna izquierda: Menú -->
+                    <div class="col-12 col-lg-4 d-flex flex-column justify-content-center align-items-center align-items-lg-start">
+                        <div class="text-center text-lg-start mb-3 w-100">
+                            <h1 class="menu-title m-0">Balatro nights at Eduardo's</h1>
+                            <div class="small mt-2">
+                                <span class="text-light-50">Jugador: </span>
+                                <span class="text-warning fw-bold" id="usernameDisplay">Cargando...</span>
+                            </div>
+                        </div>
+
+                        <div class="menu-actions d-grid gap-3 mx-auto mx-lg-0 w-100">
+                            <button class="btn btn-menu btn-lg" onclick="nuevaPartida()">🎮 Nueva partida</button>
+
+                            <button class="btn btn-menu btn-lg d-none" id="continueBtn" onclick="continuarPartida()">▶️ Continuar partida</button>
+
+                            <button class="btn btn-menu btn-lg" onclick="verBaraja()">🃏 Baraja</button>
+
+                            <button class="btn btn-menu btn-lg" onclick="configuracion()">⚙️ Configuración</button>
+
+                            <div class="text-center text-lg-start">
+                                <button class="btn btn-sm btn-outline-light-50 mt-1" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna derecha: Leaderboard -->
+                    <div class="col-12 col-lg-7 d-flex justify-content-lg-end ms-lg-auto ps-lg-5">
+                        <div class="card leaderboard-card flex-grow-1 border-purple">
+                            <div class="card-header">
+                                <h2 class="text-warning text-center mb-0">🏆 Clasificación</h2>
+                            </div>
+                            <table class="table table-borderless mb-0" id="leaderboardList">
+                                <tbody>
+                                    <tr><td colspan="3" class="text-center text-light py-4">Cargando clasificación...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+</body>
+</html>

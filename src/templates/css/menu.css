@@ -1,0 +1,77 @@
+/* Estilos del menú principal */
+body.menu-page {
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 50%, #0f0f2a 100%);
+}
+
+.menu-page .container {
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.menu-title {
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 0 18px rgba(155, 89, 182, 0.55);
+}
+
+@media (min-width: 992px) {
+    .menu-title { 
+        font-size: 2.25rem; 
+    }
+}
+
+.menu-actions {
+    max-width: 360px;
+}
+
+.btn-menu {
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-menu:hover {
+    background: linear-gradient(45deg, #f7931e, #ff6b35);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(255, 107, 53, 0.35);
+}
+
+.btn-menu:active {
+    transform: translateY(0);
+}
+
+.btn-outline-light-50 {
+    --bs-btn-color: rgba(255,255,255,0.8);
+    --bs-btn-border-color: rgba(255,255,255,0.25);
+    --bs-btn-hover-bg: rgba(255,255,255,0.12);
+    --bs-btn-hover-border-color: rgba(255,255,255,0.35);
+}
+
+.bg-purple-gradient {
+    background: linear-gradient(45deg, #8e44ad, #9b59b6) !important;
+    color: #fff !important;
+    font-weight: 700;
+    min-width: 64px;
+}
+
+/* Utilidades de colores */
+.text-light-50 { 
+    color: rgba(255,255,255,0.65) !important; 
+}
+
+.text-purple { 
+    color: #9b59b6 !important; 
+}
+
+.border-purple { 
+    border-color: rgba(123, 104, 238, 0.3) !important; 
+}
+
+.bg-purple { 
+    background-color: #9b59b6 !important; 
+}
