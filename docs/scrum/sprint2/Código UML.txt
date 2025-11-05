@@ -36,6 +36,7 @@ class Leaderboard {
 }
 
 User "1" -- "1" SavedGame : tiene >
-User "1" -- "1" Leaderboard : aparece en >
+User "1" -- "N" Leaderboard : aparece en >
+
 
 @enduml
