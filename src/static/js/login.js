@@ -1,6 +1,13 @@
 // Estado del formulario
 let isLoginMode = true;
 
+// Poner fondo
+document.body.style.backgroundImage = "url('/static/img/FNAF_MENU.png')";
+document.body.style.backgroundSize = 'cover';
+document.body.style.backgroundPosition = 'center';
+document.body.style.height = '100vh';
+document.body.style.margin = '0';
+
 // Elementos del DOM
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
