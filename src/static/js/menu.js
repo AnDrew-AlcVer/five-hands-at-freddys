@@ -2,6 +2,27 @@ window.addEventListener('DOMContentLoaded', async () => {
     await verificarSesion();
     await verificarPartidaGuardada();
     await cargarLeaderboard();
+
+    const soundMenu = new Audio('/static/sound/menu.mp3');
+    soundMenu.loop = true;
+    soundMenu.volume = 0.5;
+    soundMenu.play().catch(() => console.log('Esperando interacción del usuario para reproducir música'));
+
+    const newGameBtn = document.querySelector('.btn.btn-menu.btn-lg');
+    if (newGameBtn) {
+        newGameBtn.addEventListener('click', () => {
+            soundMenu.pause();
+            nuevaPartida();
+        });
+    }
+
+    const continueBtn = document.getElementById('continueBtn');
+    if (continueBtn) {
+        continueBtn.addEventListener('click', () => {
+            soundMenu.pause();
+            continuarPartida();
+        });
+    }
 });
 
 async function verificarSesion() {

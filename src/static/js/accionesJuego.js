@@ -1,3 +1,9 @@
+let sonidoGanar = new Audio('/static/sound/ganar.mp3');
+let sonidoPerder = new Audio('/static/sound/perder.mp3');
+
+sonidoGanar.volume = 0.7;
+sonidoPerder.volume = 1;
+
 class AccionesJuego {
     constructor(juego) {
         this.juego = juego;
@@ -5,11 +11,11 @@ class AccionesJuego {
 
     async jugarCartasSeleccionadas() {
         if (this.juego.cartasSeleccionadas.length === 0 || this.juego.estadoJuego.hands <= 0) return;
-        
-        const cartasJugar = this.juego.cartasSeleccionadas.map(id => 
+
+        const cartasJugar = this.juego.cartasSeleccionadas.map(id =>
             this.juego.manoJugador.find(carta => carta.id === id)
         );
-        
+
         try {
             const respuesta = await fetch('/jugar_cartas', {
                 method: 'POST',
@@ -21,9 +27,9 @@ class AccionesJuego {
                     gameState: this.juego.estadoJuego
                 })
             });
-            
+
             const resultado = await respuesta.json();
-            
+
             if (resultado.success) {
                 this.juego.estadoJuego = resultado.gameState;
                 this.manejarExitoJugarCartas(cartasJugar, resultado);
@@ -42,10 +48,21 @@ class AccionesJuego {
         this.juego.gestorCartas.robarNuevasCartas(cartasJugar.length);
 
         if (resultado.roundWon) {
+            sonidoGanar.currentTime = 0;
+            sonidoGanar.play();
             setTimeout(() => {
                 this.mostrarMensajeVictoria();
             }, 2000);
         } else {
+            const sinManos = this.juego.estadoJuego.hands <= 0;
+            const noLlegaPuntaje = this.juego.estadoJuego.score < this.juego.estadoJuego.blindTarget;
+
+            if (sinManos && noLlegaPuntaje) {
+                sonidoPerder.currentTime = 0;
+                sonidoPerder.play();
+                return;
+            }
+
             setTimeout(() => {
                 this.juego.gestorCartas.limpiarCartasJugadasConAnimacion();
             }, 2000);
@@ -64,7 +81,7 @@ class AccionesJuego {
                     open_store: this.juego.estadoJuego.shopOpened || false,
                     jokers_store: this.juego.jokersTienda
                 })
-            }).catch(() => {});
+            }).catch(() => { });
         })();
     }
 
@@ -99,16 +116,16 @@ class AccionesJuego {
             this.avanzarRonda();
         }, 3000);
     }
-    
+
     async avanzarRonda() {
         const nextRound = (this.juego.estadoJuego.round || 1) + 1;
-        
+
         const respuesta = await fetch('/inicializar_juego', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ round: nextRound })
         });
-        
+
         const resultado = await respuesta.json();
         if (resultado.success) {
             this.juego.estadoJuego = resultado.gameState;
@@ -126,17 +143,17 @@ class AccionesJuego {
 
     manejarJugarCartasLocal(cartasJugar) {
         this.juego.gestorCartas.moverCartasAreaJuego(cartasJugar);
-        
+
         const puntuacionBase = cartasJugar.length * 10;
         this.juego.estadoJuego.score += puntuacionBase;
         this.juego.estadoJuego.hands -= 1;
-        
+
         this.juego.actualizarUI();
         this.juego.actualizarBotonJugar();
         this.juego.limpiarSeleccion();
         this.juego.gestorCartas.removerCartasDeMano(cartasJugar);
         this.juego.gestorCartas.robarNuevasCartas(cartasJugar.length);
-        
+
         setTimeout(() => {
             this.juego.gestorCartas.limpiarCartasJugadasConAnimacion();
         }, 2000);
@@ -144,11 +161,11 @@ class AccionesJuego {
 
     async descartarCartasSeleccionadas() {
         if (this.juego.cartasSeleccionadas.length === 0 || this.juego.estadoJuego.discards <= 0) return;
-        
-        const cartasDescartar = this.juego.cartasSeleccionadas.map(id => 
+
+        const cartasDescartar = this.juego.cartasSeleccionadas.map(id =>
             this.juego.manoJugador.find(carta => carta.id === id)
         );
-        
+
         this.juego.cartasSeleccionadas.forEach((idCarta, indice) => {
             const elementoCarta = document.querySelector(`[data-card-id="${idCarta}"]`);
             if (elementoCarta) {
@@ -159,9 +176,9 @@ class AccionesJuego {
                 }, indice * 80);
             }
         });
-        
+
         await new Promise(resolve => setTimeout(resolve, cartasDescartar.length * 80 + 400));
-        
+
         try {
             const respuesta = await fetch('/descartar_cartas', {
                 method: 'POST',
@@ -173,9 +190,9 @@ class AccionesJuego {
                     gameState: this.juego.estadoJuego
                 })
             });
-            
+
             const resultado = await respuesta.json();
-            
+
             if (resultado.success) {
                 this.juego.estadoJuego = resultado.gameState;
                 this.juego.actualizarUI();
