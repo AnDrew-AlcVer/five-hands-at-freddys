@@ -23,13 +23,32 @@ window.addEventListener('DOMContentLoaded', async () => {
             continuarPartida();
         });
     }
+
+    const fondo = document.querySelector('body');
+    const imagenes = [
+        '/static/img/menu/menuBonnie.webp',
+        '/static/img/menu/menuChica.png',
+        '/static/img/menu/menuFoxy.webp',
+        '/static/img/menu/menuFreddy.png'
+    ];
+    let indice = 0;
+
+    fondo.style.backgroundImage = `url('${imagenes[indice]}')`;
+    fondo.style.backgroundSize = 'cover';
+    fondo.style.backgroundPosition = 'center';
+    fondo.style.transition = 'background-image 0.5s ease-in-out';
+
+    setInterval(() => {
+        indice = (indice + 1) % imagenes.length;
+        fondo.style.backgroundImage = `url('${imagenes[indice]}')`;
+    }, 5000);
 });
 
 async function verificarSesion() {
     try {
         const response = await fetch('/verificar_sesion');
         const data = await response.json();
-        
+
         if (data.logged_in) {
             const username = data.user?.username || data.username || 'Usuario';
             document.getElementById('usernameDisplay').textContent = username;
@@ -46,11 +65,11 @@ async function verificarPartidaGuardada() {
     try {
         const response = await fetch('/verificar_partida_guardada');
         const data = await response.json();
-        
+
         if (data.success && data.has_saved_game) {
             const continueBtn = document.getElementById('continueBtn');
             continueBtn.classList.remove('d-none');
-            
+
             const gameInfo = data.game_info;
             continueBtn.innerHTML = `▶️ Continuar partida<br><small class="text-light-50">Puntuación: ${gameInfo.score} | Dinero: $${gameInfo.money}</small>`;
         }
@@ -64,23 +83,23 @@ async function cargarLeaderboard() {
     try {
         const response = await fetch('/leaderboard');
         const data = await response.json();
-        
+
         if (data.success) {
             const leaderboardTable = document.getElementById('leaderboardList');
-            
+
             if (data.leaderboard.length === 0) {
                 leaderboardTable.innerHTML = '<tbody><tr><td colspan="3" class="text-center text-light py-4">No hay puntuaciones todavía</td></tr></tbody>';
                 return;
             }
-            
+
             // Crear tbody directamente
             let tbodyHTML = '<tbody>';
-            
+
             data.leaderboard.forEach((player, index) => {
                 const position = index + 1;
                 let rankClass = '';
                 let rankIcon = `#${position}`;
-                
+
                 // Clases especiales para top 3
                 if (position === 1) {
                     rankClass = 'top1';
@@ -95,7 +114,7 @@ async function cargarLeaderboard() {
                     // Alternar colores después del top 3
                     rankClass = (position % 2 === 0) ? 'row-even' : 'row-odd';
                 }
-                
+
                 tbodyHTML += `
                     <tr class="${rankClass}">
                         <td class="text-center fw-bold fs-5">${rankIcon}</td>
@@ -106,7 +125,7 @@ async function cargarLeaderboard() {
                     </tr>
                 `;
             });
-            
+
             tbodyHTML += '</tbody>';
             leaderboardTable.innerHTML = tbodyHTML;
         }
