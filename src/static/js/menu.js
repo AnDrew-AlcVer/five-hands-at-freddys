@@ -89,7 +89,6 @@ async function verificarPartidaGuardada() {
     }
 }
 
-// Cargar leaderboard
 async function cargarLeaderboard() {
     try {
         const response = await fetch('/auth/leaderboard');
@@ -103,7 +102,6 @@ async function cargarLeaderboard() {
                 return;
             }
 
-            // Crear tbody directamente
             let tbodyHTML = '<tbody>';
 
             data.leaderboard.forEach((player, index) => {
@@ -111,7 +109,6 @@ async function cargarLeaderboard() {
                 let rankClass = '';
                 let rankIcon = `#${position}`;
 
-        
                 if (position === 1) {
                     rankClass = 'top1';
                     rankIcon = '🥇';
@@ -122,7 +119,7 @@ async function cargarLeaderboard() {
                     rankClass = 'top3';
                     rankIcon = '🥉';
                 } else {
-                    // Alternar colores después del top 3
+                    
                     rankClass = (position % 2 === 0) ? 'row-even' : 'row-odd';
                 }
 
@@ -146,27 +143,22 @@ async function cargarLeaderboard() {
     }
 }
 
-// Nueva partida
 function nuevaPartida() {
     window.location.href = '/juego?modo=nueva';
 }
 
-// Continuar partida
 function continuarPartida() {
     window.location.href = '/juego?modo=continuar';
 }
 
-// Ver baraja
 function verBaraja() {
-    // Sin acción por ahora
+    
 }
 
-// Configuración
 function configuracion() {
-    // Sin acción por ahora
+    
 }
 
-// Cerrar sesión
 async function cerrarSesion() {
     try {
         await fetch('/auth/logout', {

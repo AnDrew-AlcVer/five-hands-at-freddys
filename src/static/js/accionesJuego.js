@@ -94,12 +94,10 @@ class AccionesJuego {
         const currentRound = this.juego.estadoJuego.round || 1;
         const nextRound = currentRound + 1;
         const isLastRound = nextRound > 5;
-        
-        // Obtener la recompensa de dinero de la ronda actual
+
         const rondaActual = this.juego.gestorObjetivos?.objetivos?.rondas?.find(r => r.numero === currentRound);
         const recompensa = rondaActual?.recompensa || 0;
-        
-        // Agregar dinero al estado del juego
+
         this.juego.estadoJuego.money = (this.juego.estadoJuego.money || 0) + recompensa;
         
         const mensaje = isLastRound 
@@ -143,7 +141,7 @@ class AccionesJuego {
     }
 
     mostrarMensajeDerrota() {
-        // Usar mensaje genérico de derrota
+        
         const mensaje_derrota = this.juego.gestorObjetivos?.objetivos?.mensajes?.derrota || '💀 ¡Ronda fallida! 💀';
         
         const div = document.createElement('div');
@@ -173,8 +171,23 @@ class AccionesJuego {
 
         setTimeout(() => {
             div.remove();
-            this.volver_al_menu();
+            
+            this.borrarPartidaGuardada();
         }, 4000);
+    }
+
+    async borrarPartidaGuardada() {
+        try {
+            await fetch('/game/borrar_partida_guardada', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+            });
+        } catch (error) {
+            console.error('Error borrando partida:', error);
+        } finally {
+            this.volver_al_menu();
+        }
     }
 
     volver_al_menu() {
@@ -184,7 +197,7 @@ class AccionesJuego {
 
     async avanzarRonda() {
         const nextRound = (this.juego.estadoJuego.round || 1) + 1;
-        const moneyAcumulado = this.juego.estadoJuego.money || 0;  // ✅ Guardar dinero actual
+        const moneyAcumulado = this.juego.estadoJuego.money || 0;  
 
         const respuesta = await fetch('/game/inicializar_juego', {
             method: 'POST',
@@ -192,14 +205,14 @@ class AccionesJuego {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 round: nextRound,
-                played_cards: this.juego.cartasJugadas,  // ✅ Cartas jugadas para excluir
-                current_hand: this.juego.manoJugador     // ✅ Cartas en mano para excluir
+                played_cards: this.juego.cartasJugadas,  
+                current_hand: this.juego.manoJugador     
             })
         });
 
         const resultado = await respuesta.json();
         if (resultado.success) {
-            // Resetear estado completamente pero preservar dinero
+            
             this.juego.estadoJuego = {
                 ...resultado.gameState,
                 hands: 4,
@@ -207,7 +220,7 @@ class AccionesJuego {
                 score: 0,
                 chips: 0,
                 mult: 0,
-                money: moneyAcumulado  // ✅ Preservar dinero acumulado
+                money: moneyAcumulado  
             };
             
             this.juego.manoJugador = resultado.hand.map((carta, indice) => ({
@@ -217,12 +230,10 @@ class AccionesJuego {
             this.juego.totalCartasUsadas = this.juego.manoJugador.length;
             this.juego.cartasJugadas = [];
             this.juego.cartasSeleccionadas = [];
-            
-            // Limpiar e renderizar UI
-            this.juego.gestorCartas.limpiarAreaJuego();  // Limpia el área de juego sin animación
+
+            this.juego.gestorCartas.limpiarAreaJuego();  
             this.juego.gestorCartas.renderizarManoJugador();
-            
-            // Actualizar UI
+
             console.log('🔄 Nueva ronda inicializada:', {
                 round: this.juego.estadoJuego.round,
                 hands: this.juego.estadoJuego.hands,

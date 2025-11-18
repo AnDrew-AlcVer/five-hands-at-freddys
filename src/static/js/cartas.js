@@ -66,7 +66,7 @@ class GestorCartas {
     }
 
     renderizarCartasJugadas(cartas) {
-        // Método para renderizar cartas jugadas sin animación (al cargar partida guardada)
+        
         const areaJuego = document.getElementById('playedCards');
         if (!areaJuego) return;
         

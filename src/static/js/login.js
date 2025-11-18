@@ -1,14 +1,11 @@
-// Estado del formulario
 let isLoginMode = true;
 
-// Poner fondo
 document.body.style.backgroundImage = "url('/static/img/FNAF_MENU.png')";
 document.body.style.backgroundSize = 'cover';
 document.body.style.backgroundPosition = 'center';
 document.body.style.height = '100vh';
 document.body.style.margin = '0';
 
-// Elementos del DOM
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const toggleText = document.getElementById('toggleText');
@@ -16,7 +13,6 @@ const formTitle = document.getElementById('formTitle');
 const errorMessage = document.getElementById('errorMessage');
 const successMessage = document.getElementById('successMessage');
 
-// Alternar entre login y registro usando delegación de eventos
 toggleText.addEventListener('click', (e) => {
     if (e.target.id === 'toggleLink') {
         isLoginMode = !isLoginMode;
@@ -37,7 +33,6 @@ toggleText.addEventListener('click', (e) => {
     }
 });
 
-// Manejar login
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideMessages();
@@ -75,7 +70,6 @@ loginForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Manejar registro
 registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     hideMessages();
@@ -84,8 +78,7 @@ registerForm.addEventListener('submit', async (e) => {
     const email = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
     const passwordConfirm = document.getElementById('regPasswordConfirm').value;
-    
-    // Validaciones
+
     if (!username || !email || !password || !passwordConfirm) {
         showError('Por favor completa todos los campos');
         return;
@@ -137,7 +130,6 @@ registerForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Funciones de utilidad
 function showError(message) {
     errorMessage.textContent = message;
     errorMessage.style.display = 'block';

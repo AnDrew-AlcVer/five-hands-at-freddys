@@ -75,8 +75,7 @@ class GestorJokers {
         this.juego.jokersTienda.forEach(joker => {
             const puedeComprar = this.juego.estadoJuego.money >= joker.price;
             const yaComprado = this.juego.jokersPropiedad.some(j => j.id === joker.id);
-            
-            // ✅ Mostrar imagen si existe, si no mostrar emoji (60px para coincidir con el área de juego)
+
             const contenidoVisual = joker.image 
                 ? `<img src="${joker.image}" alt="${joker.name}" style="width: 60px; height: auto; object-fit: contain; border-radius: 5px; margin-bottom: 15px;">`
                 : `<div style="font-size: 3em; margin-bottom: 10px;">🃏</div>`;
@@ -131,25 +130,22 @@ class GestorJokers {
     }
 
     comprarJoker(joker_id) {
-        // Encontrar el joker en la tienda por ID
+        
         const joker = this.juego.jokersTienda.find(j => j.id === joker_id);
         if (!joker) return;
         
         if (this.juego.estadoJuego.money < joker.price) return;
         
         if (this.juego.jokersPropiedad.length >= 5) return;
-        
-        // Agregar joker a la propiedad
+
         this.juego.jokersPropiedad.push(joker);
         this.juego.estadoJuego.money -= joker.price;
         this.juego.jokersTienda = this.juego.jokersTienda.filter(j => j.id !== joker_id);
-        
-        // Actualizar UI
+
         this.renderizarJokers();
         this.actualizarTienda();
         this.juego.actualizarUI();
-        
-        // Guardar en base de datos
+
         fetch('/game/guardar_partida', {
             method: 'POST',
             credentials: 'include',
@@ -181,8 +177,7 @@ class GestorJokers {
         this.juego.jokersTienda.forEach(joker => {
             const puedeComprar = this.juego.estadoJuego.money >= joker.price;
             const yaComprado = this.juego.jokersPropiedad.some(j => j.id === joker.id);
-            
-            // ✅ Mostrar imagen si existe, si no mostrar emoji (60px para coincidir con el área de juego)
+
             const contenidoVisual = joker.image 
                 ? `<img src="${joker.image}" alt="${joker.name}" style="width: 60px; height: auto; object-fit: contain; border-radius: 5px; margin-bottom: 15px;">`
                 : `<div style="font-size: 3em; margin-bottom: 10px;">🃏</div>`;
@@ -247,7 +242,7 @@ class GestorJokers {
             const joker = this.juego.jokersPropiedad[i - 1];
             
             if (joker) {
-                // ✅ Si el joker tiene imagen, mostrarla; si no, mostrar el emoji
+                
                 const contenidoVisual = joker.image 
                     ? `<img src="${joker.image}" alt="${joker.name}" style="width: 60px; height: auto; object-fit: contain; border-radius: 5px;">`
                     : `<div style="font-size: 3em; filter: none;">🃏</div>`;

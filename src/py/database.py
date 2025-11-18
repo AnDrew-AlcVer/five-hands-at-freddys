@@ -1,6 +1,3 @@
-"""
-Utilidades de base de datos con SQLAlchemy ORM
-"""
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -14,7 +11,7 @@ def init_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_PATH}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
-    
+
     with app.app_context():
         db.create_all()
 

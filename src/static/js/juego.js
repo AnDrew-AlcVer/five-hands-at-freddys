@@ -36,17 +36,16 @@ class Juego {
         this.obtenerModoPartida();
         this.configurarEventos();
         iniciarMusicaJuego();
-        
-        // Cargar objetivos y juego de forma asincrónica
+
         this.cargarJuegoConObjetivos().catch(error => {
             console.error('Error en cargarJuegoConObjetivos:', error);
-            // Fallback: cargar juego sin objetivos
+            
             this.cargarJuego();
         });
     }
 
     async cargarJuegoConObjetivos() {
-        // Cargar objetivos primero
+        
         try {
             const cargado = await this.gestorObjetivos.cargarObjetivos();
             if (!cargado) {
@@ -55,8 +54,7 @@ class Juego {
         } catch (error) {
             console.warn('Error en cargarObjetivos:', error);
         }
-        
-        // Luego cargar el juego
+
         await this.cargarJuego();
     }
 
@@ -67,13 +65,12 @@ class Juego {
 
     async cargarJuego() {
         try {
-            // Si el modo es "nueva", generar directamente sin intentar cargar
+            
             if (this.modo === 'nueva') {
                 await this.generarManoJugador();
                 return;
             }
 
-            // Si es "continuar", intentar cargar la partida guardada
             const res = await fetch('/game/obtener_ultima_partida', {
                 credentials: 'include'
             });
@@ -98,10 +95,36 @@ class Juego {
                 this.estadoJuego.shopOpened = this.estadoJuego.shopOpened || false;
 
                 this.manoJugador = (data.gameState.actual_hand || []).map((carta, indice) => ({ ...carta, id: indice }));
-                this.cartasJugadas = [];  // 🔧 Limpiar cartas jugadas al cargar (son del turno anterior)
+                this.cartasJugadas = [];  
                 this.jokersPropiedad = data.gameState.purchased_jokers || [];
                 this.jokersTienda = data.gameState.jokers_store || [];
-                this.totalCartasUsadas = data.gameState.num_played_cards || this.manoJugador.length || 0;
+                
+                this.totalCartasUsadas = this.manoJugador.length;
+
+                if (this.manoJugador.length < 9 && this.manoJugador.length > 0) {
+                    const cartasArobar = 9 - this.manoJugador.length;
+                    const resRobar = await fetch('/game/robar_cartas', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            count: cartasArobar,
+                            playedCards: this.cartasJugadas,
+                            currentHand: this.manoJugador
+                        })
+                    });
+                    
+                    const dataRobar = await resRobar.json();
+                    if (dataRobar.success && dataRobar.cards) {
+                        
+                        const nuevasCartas = dataRobar.cards.map((carta, idx) => ({
+                            ...carta,
+                            id: this.manoJugador.length + idx
+                        }));
+                        this.manoJugador = this.manoJugador.concat(nuevasCartas);
+                        this.totalCartasUsadas = this.manoJugador.length;
+                    }
+                }
 
                 if (this.manoJugador.length === 0) {
                     await this.generarManoJugador();

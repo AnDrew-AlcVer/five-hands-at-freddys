@@ -13,12 +13,12 @@ except ImportError:
     crear_base_datos = None
 
 from py.database import init_db
-from py.login import (login, register, logout, verificar_sesion, 
+from py.login import (login, register, logout, verificar_sesion,
                       verificar_partida_guardada, leaderboard)
-from py.juego import (inicializar_juego, robar_cartas, jugar_cartas, 
+from py.juego import (inicializar_juego, robar_cartas, jugar_cartas,
                       descartar_cartas, obtener_jokers_tienda, comprar_joker,
                       guardar_partida, obtener_ultima_partida, require_session,
-                      obtener_objetivos, validar_ronda)
+                      obtener_objetivos, validar_ronda, borrar_partida_guardada)
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'clave_por_defecto_no_usar_en_produccion')
@@ -143,6 +143,11 @@ def game_validar_ronda():
     numero_ronda = data.get('numero_ronda')
     puntuacion = data.get('puntuacion')
     return validar_ronda(numero_ronda, puntuacion)
+
+@app.route('/game/borrar_partida_guardada', methods=['POST'])
+@require_session
+def game_borrar_partida():
+    return borrar_partida_guardada()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)

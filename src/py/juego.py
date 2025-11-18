@@ -37,7 +37,7 @@ def generate_full_deck():
 def card_exists_in_list(card, card_list):
     if not isinstance(card_list, list):
         return False
-    return any(c.get('suit') == card.get('suit') and c.get('value') == card.get('value') 
+    return any(c.get('suit') == card.get('suit') and c.get('value') == card.get('value')
                for c in card_list if isinstance(c, dict))
 
 def require_session(f):
@@ -52,23 +52,22 @@ def inicializar_juego():
     try:
         data = request.get_json() or {}
         round_number = data.get('round', 1)
-        played_cards = data.get('played_cards', [])  
-        current_hand = data.get('current_hand', [])  
-        
+        played_cards = data.get('played_cards', [])
+        current_hand = data.get('current_hand', [])
+
         if not isinstance(round_number, int) or round_number < 1 or round_number > 8:
             return jsonify({'success': False, 'message': 'Ronda inválida (1-8)'}), 400
-        
+
         blind_target = 300 + (round_number - 1) * 200
-        
-        # ✅ Excluir cartas que ya fueron usadas
+
         used_cards = played_cards + current_hand
         full_deck = generate_full_deck()
         available_cards = [card for card in full_deck if not card_exists_in_list(card, used_cards)]
         random.shuffle(available_cards)
-        
+
         return jsonify({
             'success': True,
-            'hand': available_cards[:9],  # ✅ Usar cartas disponibles
+            'hand': available_cards[:9],
             'gameState': {
                 'score': 0, 'hands': 4, 'discards': 4, 'money': 0,
                 'shopOpened': False, 'round': round_number, 'blindTarget': blind_target,
@@ -85,20 +84,20 @@ def robar_cartas():
         count = data.get('count', 0)
         played_cards = data.get('playedCards', [])
         current_hand = data.get('currentHand', [])
-        
+
         if not isinstance(count, int) or count <= 0:
             return jsonify({'success': False, 'message': 'count debe ser positivo'}), 400
-        
+
         used_cards = played_cards + current_hand
         available_cards = [card for card in generate_full_deck() if not card_exists_in_list(card, used_cards)]
-        
+
         if not available_cards:
             return jsonify({'success': False, 'message': 'No quedan cartas', 'cards': []}), 200
-        
+
         random.shuffle(available_cards)
         cards_to_draw = min(count, len(available_cards))
         new_cards = available_cards[:cards_to_draw]
-        
+
         return jsonify({
             'success': True, 'cards': new_cards,
             'message': f'Se robaron {len(new_cards)} cartas'
@@ -111,13 +110,13 @@ def jugar_cartas():
         data = request.get_json() or {}
         cards = data.get('played_cards', [])
         game_state = data.get('gameState', {})
-        
+
         if not isinstance(cards, list) or len(cards) == 0:
             return jsonify({'success': False, 'message': 'Se deben proporcionar cartas'}), 400
-        
+
         if game_state.get('hands', 0) <= 0:
             return jsonify({'success': False, 'message': 'No quedan manos'}), 400
-        
+
         game_state['hands'] -= 1
         chips = len(cards) * 20
         mult = len(cards) + 2
@@ -125,10 +124,10 @@ def jugar_cartas():
         game_state['score'] = game_state.get('score', 0) + points
         game_state['chips'] = chips
         game_state['mult'] = mult
-        
+
         blind_target = game_state.get('blindTarget', 300)
         round_won = game_state['score'] >= blind_target
-        
+
         return jsonify({
             'success': True, 'gameState': game_state, 'score': game_state['score'],
             'roundWon': round_won,
@@ -142,13 +141,13 @@ def descartar_cartas():
         data = request.get_json() or {}
         cards = data.get('discarded_cards', [])
         game_state = data.get('gameState', {})
-        
+
         if not isinstance(cards, list) or len(cards) == 0:
             return jsonify({'success': False, 'message': 'Cartas requeridas'}), 400
-        
+
         if game_state.get('discards', 0) <= 0:
             return jsonify({'success': False, 'message': 'No quedan descartes'}), 400
-        
+
         game_state['discards'] -= 1
         return jsonify({
             'success': True, 'remaining_discards': game_state['discards'],
@@ -161,22 +160,22 @@ def obtener_jokers_tienda():
     try:
         data = request.get_json() or {}
         game_state = data.get('gameState', {})
-        
+
         if game_state.get('shopOpened', False):
             return jsonify({'success': False, 'message': 'Tienda ya abierta'}), 400
-        
+
         game_state['shopOpened'] = True
-        
+
         if not JOKERS or len(JOKERS) < 2:
             return jsonify({
                 'success': True, 'jokers': JOKERS[:2] if JOKERS else [],
                 'gameState': game_state
             }), 200
-        
+
         available_jokers = [j for j in JOKERS if j.get('price', 100) <= 100]
         if len(available_jokers) < 2:
             available_jokers = JOKERS
-        
+
         selected_jokers = random.sample(available_jokers, min(2, len(available_jokers)))
         return jsonify({
             'success': True, 'jokers': selected_jokers, 'gameState': game_state
@@ -189,19 +188,19 @@ def comprar_joker():
         data = request.get_json() or {}
         joker_id = data.get('joker_id')
         game_state = data.get('gameState', {})
-        
+
         if not joker_id:
             return jsonify({'success': False, 'message': 'joker_id requerido'}), 400
-        
+
         joker = next((j for j in JOKERS if j.get('id') == joker_id), None)
-        
+
         if not joker:
             return jsonify({'success': False, 'message': 'Joker no encontrado'}), 404
-        
+
         joker_price = joker.get('price', 0)
         if game_state.get('money', 0) < joker_price:
             return jsonify({'success': False, 'message': 'Dinero insuficiente'}), 400
-        
+
         game_state['money'] -= joker_price
         return jsonify({
             'success': True, 'joker': joker, 'remaining_money': game_state['money'],
@@ -214,11 +213,11 @@ def guardar_partida():
     try:
         data = request.get_json() or {}
         game_state = data.get('gameState', {})
-        
+
         user = User.query.get(session['user_id'])
         if not user:
             return jsonify({'success': False, 'message': 'Usuario no encontrado'}), 404
-        
+
         saved_game = user.saved_game
         if not saved_game:
             saved_game = SavedGame(
@@ -227,7 +226,7 @@ def guardar_partida():
             )
             user.saved_game = saved_game
             db.session.add(saved_game)
-        
+
         saved_game.score = game_state.get('score', 0)
         saved_game.hands_left = game_state.get('hands', 4)
         saved_game.discards_left = game_state.get('discards', 4)
@@ -242,15 +241,15 @@ def guardar_partida():
         saved_game.blind_target = game_state.get('blindTarget', 300)
         saved_game.chips = game_state.get('chips', 0)
         saved_game.mult = game_state.get('mult', 0)
-        
+
         db.session.commit()
-        
+
         current_score = game_state.get('score', 0)
         leaderboard = Leaderboard.query.filter_by(user_id=user.id).first()
         if leaderboard and current_score > leaderboard.max_score:
             leaderboard.max_score = current_score
             db.session.commit()
-        
+
         return jsonify({'success': True, 'message': 'Partida guardada'}), 200
     except Exception as e:
         db.session.rollback()
@@ -259,12 +258,12 @@ def guardar_partida():
 def obtener_ultima_partida():
     try:
         user = User.query.get(session['user_id'])
-        
+
         if not user or not user.saved_game:
             return jsonify({'success': True, 'has_saved_game': False}), 200
-        
+
         saved_game = user.saved_game
-        
+
         return jsonify({
             'success': True, 'has_saved_game': True,
             'gameState': {
@@ -296,14 +295,14 @@ def validar_ronda(numero_ronda, puntuacion):
     try:
         if not OBJETIVOS.get('rondas'):
             return jsonify({'success': False, 'message': 'Objetivos no disponibles'}), 500
-        
+
         ronda = next((r for r in OBJETIVOS['rondas'] if r['numero'] == numero_ronda), None)
         if not ronda:
             return jsonify({'success': False, 'message': f'Ronda {numero_ronda} no encontrada'}), 404
-        
-        puntos_requeridos = ronda['puntos']  # ✅ Cambiar de puntos_minimos a puntos
+
+        puntos_requeridos = ronda['puntos']
         aprobada = puntuacion >= puntos_requeridos
-        
+
         return jsonify({
             'success': True,
             'aprobada': aprobada,
@@ -314,4 +313,36 @@ def validar_ronda(numero_ronda, puntuacion):
             'recompensa': ronda['recompensa'] if aprobada else 0
         }), 200
     except Exception as e:
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
+
+def borrar_partida_guardada():
+    try:
+        user = User.query.get(session['user_id'])
+        if not user:
+            return jsonify({'success': False, 'message': 'Usuario no encontrado'}), 404
+
+        if user.saved_game:
+
+            saved_game = user.saved_game
+            saved_game.score = 0
+            saved_game.hands_left = 4
+            saved_game.discards_left = 4
+            saved_game.money = 0
+            saved_game.actual_hand = '[]'
+            saved_game.played_cards = '[]'
+            saved_game.num_played_cards = 9
+            saved_game.purchased_jokers = '[]'
+            saved_game.open_store = 0
+            saved_game.jokers_store = '[]'
+            saved_game.round = 1
+            saved_game.blind_target = 300
+            saved_game.chips = 0
+            saved_game.mult = 0
+
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Partida guardada borrada'}), 200
+
+        return jsonify({'success': False, 'message': 'No hay partida guardada'}), 404
+    except Exception as e:
+        db.session.rollback()
         return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500

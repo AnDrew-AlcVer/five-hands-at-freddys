@@ -39,7 +39,7 @@ class GestorObjetivos {
 
     obtenerPuntosMinimos(numero_ronda) {
         const ronda = this.obtenerRonda(numero_ronda);
-        return ronda ? ronda.puntos : 0;  // ✅ Cambiar de puntos_minimos a puntos
+        return ronda ? ronda.puntos : 0;  
     }
 
     obtenerDescripcion(numero_ronda) {

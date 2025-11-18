@@ -32,41 +32,40 @@ def crear_base_datos(auto=False):
         else:
             return True
         os.remove(db_path)
-    
+
     try:
         with open(sql_file, 'r', encoding='utf-8') as f:
             sql_commands = f.read()
-        
+
         conn = sqlite3.connect(db_path)
         conn.execute("PRAGMA foreign_keys = ON;")
         conn.executescript(sql_commands)
-        
+
         for i, user in enumerate(users_data, 1):
             conn.execute(
                 'INSERT INTO saved_games (score, hands_left, discards_left, money, actual_hand, played_cards, num_played_cards) VALUES (?, ?, ?, ?, ?, ?, ?)',
                 (0, 4, 4, 10, '[]', '[]', 9)
             )
-            
+
             password_hash = hash_password(user['password'])
             conn.execute(
                 'INSERT INTO users (username, email, password_hash, admin, save_game) VALUES (?, ?, ?, ?, ?)',
                 (user['username'], user['email'], password_hash, user['admin'], i)
             )
-            
+
             conn.execute(
                 'INSERT INTO leaderboard (user_id, max_score) VALUES (?, ?)',
                 (i, user['score'])
             )
-        
+
         conn.commit()
         conn.close()
         return True
-        
+
     except Exception as e:
         if os.path.exists(db_path):
             os.remove(db_path)
         return False
-
 
 if __name__ == '__main__':
     success = crear_base_datos()
