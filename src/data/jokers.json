@@ -1,19 +1,21 @@
 [
     {
-        "id": "joker1",
-        "name": "Joker Multiplicador",
-        "description": "Multiplica puntos x2",
-        "price": 5,
+        "id": "freddy",
+        "name": "Freddy Fazbear",
+        "description": "El animatrón principal",
+        "price": 15,
         "effect": "multiplier",
-        "value": 2
+        "value": 2,
+        "image": "/static/img/jokers/Freddy.png"
     },
     {
-        "id": "joker2",
-        "name": "Joker Bonus",
-        "description": "+100 puntos por mano",
-        "price": 7,
+        "id": "springtrap",
+        "name": "Springtrap",
+        "description": "El animatrón del miedo",
+        "price": 20,
         "effect": "bonus",
-        "value": 10
+        "value": 10,
+        "image": "/static/img/jokers/Springtrap.png"
     },
     {
         "id": "joker3",

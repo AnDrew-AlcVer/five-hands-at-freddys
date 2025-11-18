@@ -1,9 +1,9 @@
 // Verificar sesión al cargar la página
 async function verificarSesion() {
     try {
-        const response = await fetch('/verificar_sesion', {
+        const response = await fetch('/auth/verificar_sesion', {
             method: 'GET',
-            credentials: 'same-origin'
+            credentials: 'include'
         });
         
         const data = await response.json();

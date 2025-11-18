@@ -1,0 +1,34 @@
+{
+  "rondas": [
+    {
+      "numero": 1,
+      "puntos": 100,
+      "recompensa": 50
+    },
+    {
+      "numero": 2,
+      "puntos": 250,
+      "recompensa": 100
+    },
+    {
+      "numero": 3,
+      "puntos": 450,
+      "recompensa": 150
+    },
+    {
+      "numero": 4,
+      "puntos": 700,
+      "recompensa": 200
+    },
+    {
+      "numero": 5,
+      "puntos": 1000,
+      "recompensa": 300
+    }
+  ],
+  "mensajes": {
+    "victoria": "¡Ronda superada!",
+    "derrota": "💀 ¡Ronda fallida!",
+    "victoria_final": "🏆 ¡GANASTE LAS CINCO NOCHES CON EDUARDO!"
+  }
+}

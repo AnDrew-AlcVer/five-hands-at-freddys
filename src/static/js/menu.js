@@ -53,7 +53,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 async function verificarSesion() {
     try {
-        const response = await fetch('/verificar_sesion');
+        const response = await fetch('/auth/verificar_sesion', {
+            credentials: 'include'
+        });
         const data = await response.json();
 
         if (data.logged_in) {
@@ -70,7 +72,9 @@ async function verificarSesion() {
 
 async function verificarPartidaGuardada() {
     try {
-        const response = await fetch('/verificar_partida_guardada');
+        const response = await fetch('/auth/verificar_partida_guardada', {
+            credentials: 'include'
+        });
         const data = await response.json();
 
         if (data.success && data.has_saved_game) {
@@ -88,7 +92,7 @@ async function verificarPartidaGuardada() {
 // Cargar leaderboard
 async function cargarLeaderboard() {
     try {
-        const response = await fetch('/leaderboard');
+        const response = await fetch('/auth/leaderboard');
         const data = await response.json();
 
         if (data.success) {
@@ -107,7 +111,7 @@ async function cargarLeaderboard() {
                 let rankClass = '';
                 let rankIcon = `#${position}`;
 
-                // Clases especiales para top 3
+        
                 if (position === 1) {
                     rankClass = 'top1';
                     rankIcon = '🥇';
@@ -144,12 +148,12 @@ async function cargarLeaderboard() {
 
 // Nueva partida
 function nuevaPartida() {
-    window.location.href = '/juego';
+    window.location.href = '/juego?modo=nueva';
 }
 
 // Continuar partida
 function continuarPartida() {
-    window.location.href = '/juego';
+    window.location.href = '/juego?modo=continuar';
 }
 
 // Ver baraja
@@ -165,7 +169,10 @@ function configuracion() {
 // Cerrar sesión
 async function cerrarSesion() {
     try {
-        await fetch('/logout', { method: 'POST' });
+        await fetch('/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
         window.location.href = '/login';
     } catch (error) {
         console.error('Error cerrando sesión:', error);

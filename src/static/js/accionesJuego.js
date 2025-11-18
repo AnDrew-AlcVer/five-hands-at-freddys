@@ -17,13 +17,14 @@ class AccionesJuego {
         );
 
         try {
-            const respuesta = await fetch('/jugar_cartas', {
+            const respuesta = await fetch('/game/jugar_cartas', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    cards: cartasJugar,
+                    played_cards: cartasJugar,
                     gameState: this.juego.estadoJuego
                 })
             });
@@ -60,6 +61,9 @@ class AccionesJuego {
             if (sinManos && noLlegaPuntaje) {
                 sonidoPerder.currentTime = 0;
                 sonidoPerder.play();
+                setTimeout(() => {
+                    this.mostrarMensajeDerrota();
+                }, 2000);
                 return;
             }
 
@@ -69,8 +73,9 @@ class AccionesJuego {
         }
 
         (async () => {
-            const r = await fetch('/guardar_partida', {
+            const r = await fetch('/game/guardar_partida', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     gameState: this.juego.estadoJuego,
@@ -86,58 +91,149 @@ class AccionesJuego {
     }
 
     mostrarMensajeVictoria() {
-        const mensaje = document.createElement('div');
-        mensaje.style.cssText = `
+        const currentRound = this.juego.estadoJuego.round || 1;
+        const nextRound = currentRound + 1;
+        const isLastRound = nextRound > 5;
+        
+        // Obtener la recompensa de dinero de la ronda actual
+        const rondaActual = this.juego.gestorObjetivos?.objetivos?.rondas?.find(r => r.numero === currentRound);
+        const recompensa = rondaActual?.recompensa || 0;
+        
+        // Agregar dinero al estado del juego
+        this.juego.estadoJuego.money = (this.juego.estadoJuego.money || 0) + recompensa;
+        
+        const mensaje = isLastRound 
+            ? (this.juego.gestorObjetivos?.objetivos?.mensajes?.victoria_final || '🏆 ¡GANASTE LAS CINCO NOCHES! 🏆')
+            : (this.juego.gestorObjetivos?.objetivos?.mensajes?.victoria || '🎉 ¡Ronda superada! 🎉');
+        
+        const div = document.createElement('div');
+        div.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            background: linear-gradient(45deg, ${isLastRound ? '#f39c12' : '#2ecc71'}, ${isLastRound ? '#e67e22' : '#27ae60'});
             color: white;
             padding: 40px 60px;
             border-radius: 20px;
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: bold;
             z-index: 10000;
             text-align: center;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             border: 3px solid #fff;
         `;
-        mensaje.innerHTML = `
-            🎉 ¡RONDA GANADA! 🎉<br>
+        div.innerHTML = `
+            ${mensaje}<br>
             <span style="font-size: 0.5em; display: block; margin-top: 15px;">
-                Objetivo superado: ${this.juego.estadoJuego.score} / ${this.juego.estadoJuego.blindTarget}
+                Puntuación: ${this.juego.estadoJuego.score} / ${this.juego.estadoJuego.blindTarget}<br>
+                💰 ¡Ganaste $${recompensa}!
             </span>
         `;
-        document.body.appendChild(mensaje);
+        document.body.appendChild(div);
 
         setTimeout(() => {
-            mensaje.remove();
-            this.avanzarRonda();
+            div.remove();
+            if (isLastRound) {
+                window.location.href = '/menu';
+            } else {
+                this.avanzarRonda();
+            }
         }, 3000);
+    }
+
+    mostrarMensajeDerrota() {
+        // Usar mensaje genérico de derrota
+        const mensaje_derrota = this.juego.gestorObjetivos?.objetivos?.mensajes?.derrota || '💀 ¡Ronda fallida! 💀';
+        
+        const div = document.createElement('div');
+        div.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            font-size: 2em;
+            font-weight: bold;
+            z-index: 10000;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 3px solid #fff;
+        `;
+        div.innerHTML = `
+            ${mensaje_derrota}<br>
+            <span style="font-size: 0.5em; display: block; margin-top: 15px;">
+                Puntuación alcanzada: ${this.juego.estadoJuego.score} / ${this.juego.estadoJuego.blindTarget}
+            </span>
+        `;
+        document.body.appendChild(div);
+
+        setTimeout(() => {
+            div.remove();
+            this.volver_al_menu();
+        }, 4000);
+    }
+
+    volver_al_menu() {
+        pararMusicaJuego();
+        window.location.href = '/menu';
     }
 
     async avanzarRonda() {
         const nextRound = (this.juego.estadoJuego.round || 1) + 1;
+        const moneyAcumulado = this.juego.estadoJuego.money || 0;  // ✅ Guardar dinero actual
 
-        const respuesta = await fetch('/inicializar_juego', {
+        const respuesta = await fetch('/game/inicializar_juego', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ round: nextRound })
+            body: JSON.stringify({ 
+                round: nextRound,
+                played_cards: this.juego.cartasJugadas,  // ✅ Cartas jugadas para excluir
+                current_hand: this.juego.manoJugador     // ✅ Cartas en mano para excluir
+            })
         });
 
         const resultado = await respuesta.json();
         if (resultado.success) {
-            this.juego.estadoJuego = resultado.gameState;
+            // Resetear estado completamente pero preservar dinero
+            this.juego.estadoJuego = {
+                ...resultado.gameState,
+                hands: 4,
+                discards: 4,
+                score: 0,
+                chips: 0,
+                mult: 0,
+                money: moneyAcumulado  // ✅ Preservar dinero acumulado
+            };
+            
             this.juego.manoJugador = resultado.hand.map((carta, indice) => ({
                 ...carta,
                 id: indice
             }));
             this.juego.totalCartasUsadas = this.juego.manoJugador.length;
             this.juego.cartasJugadas = [];
+            this.juego.cartasSeleccionadas = [];
+            
+            // Limpiar e renderizar UI
+            this.juego.gestorCartas.limpiarAreaJuego();  // Limpia el área de juego sin animación
             this.juego.gestorCartas.renderizarManoJugador();
-            this.juego.gestorCartas.limpiarCartasJugadas();
+            
+            // Actualizar UI
+            console.log('🔄 Nueva ronda inicializada:', {
+                round: this.juego.estadoJuego.round,
+                hands: this.juego.estadoJuego.hands,
+                discards: this.juego.estadoJuego.discards,
+                score: this.juego.estadoJuego.score,
+                money: this.juego.estadoJuego.money,
+                cartasDisponibles: this.juego.manoJugador.length
+            });
+            
             this.juego.actualizarUI();
+            this.juego.actualizarBotonJugar();
         }
     }
 
@@ -180,13 +276,14 @@ class AccionesJuego {
         await new Promise(resolve => setTimeout(resolve, cartasDescartar.length * 80 + 400));
 
         try {
-            const respuesta = await fetch('/descartar_cartas', {
+            const respuesta = await fetch('/game/descartar_cartas', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    cards: cartasDescartar,
+                    discarded_cards: cartasDescartar,
                     gameState: this.juego.estadoJuego
                 })
             });

@@ -33,6 +33,8 @@ class GestorCartas {
 
     renderizarManoJugador() {
         const contenedorMano = document.getElementById('playerHand');
+        if (!contenedorMano) return;
+        
         contenedorMano.innerHTML = '';
         
         this.juego.manoJugador.forEach(carta => {
@@ -58,6 +60,23 @@ class GestorCartas {
                 elementoCarta.classList.add('played-card');
                 areaJuego.appendChild(elementoCarta);
             }, indice * 100);
+        });
+        
+        this.juego.cartasJugadas = [...cartas];
+    }
+
+    renderizarCartasJugadas(cartas) {
+        // Método para renderizar cartas jugadas sin animación (al cargar partida guardada)
+        const areaJuego = document.getElementById('playedCards');
+        if (!areaJuego) return;
+        
+        areaJuego.classList.add('has-cards');
+        areaJuego.innerHTML = '';
+        
+        cartas.forEach((carta) => {
+            const elementoCarta = this.crearElementoCarta(carta, true);
+            elementoCarta.classList.add('played-card');
+            areaJuego.appendChild(elementoCarta);
         });
         
         this.juego.cartasJugadas = [...cartas];
@@ -95,8 +114,9 @@ class GestorCartas {
 
     async robarNuevasCartas(cantidad) {
         try {
-            const respuesta = await fetch('/robar_cartas', {
+            const respuesta = await fetch('/game/robar_cartas', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -127,8 +147,9 @@ class GestorCartas {
 
     async robarNuevasCartasConAnimacion(cantidad) {
         try {
-            const respuesta = await fetch('/robar_cartas', {
+            const respuesta = await fetch('/game/robar_cartas', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },

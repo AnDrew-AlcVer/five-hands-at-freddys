@@ -31,42 +31,95 @@ class Juego {
         this.gestorCartas = new GestorCartas(this);
         this.gestorJokers = new GestorJokers(this);
         this.accionesJuego = new AccionesJuego(this);
+        this.gestorObjetivos = new GestorObjetivos();
 
+        this.obtenerModoPartida();
         this.configurarEventos();
-        this.inicializarJuego();
-
         iniciarMusicaJuego();
+        
+        // Cargar objetivos y juego de forma asincrónica
+        this.cargarJuegoConObjetivos().catch(error => {
+            console.error('Error en cargarJuegoConObjetivos:', error);
+            // Fallback: cargar juego sin objetivos
+            this.cargarJuego();
+        });
     }
 
-    async inicializarJuego() {
-        const res = await fetch('/obtener_ultima_partida');
-        const data = await res.json();
-
-        if (data.success && data.has_saved_game) {
-            this.estadoJuego = data.gameState || {};
-            this.estadoJuego.score = this.estadoJuego.score || 0;
-            this.estadoJuego.hands = this.estadoJuego.hands || 4;
-            this.estadoJuego.discards = this.estadoJuego.discards || 4;
-            this.estadoJuego.money = this.estadoJuego.money || 0;
-            this.estadoJuego.blindTarget = this.estadoJuego.blindTarget || 300;
-            this.estadoJuego.chips = this.estadoJuego.chips || 0;
-            this.estadoJuego.mult = this.estadoJuego.mult || 0;
-            this.estadoJuego.round = this.estadoJuego.round || 1;
-            this.estadoJuego.shopOpened = this.estadoJuego.shopOpened || false;
-
-            this.manoJugador = (data.gameState.actual_hand || []).map((carta, indice) => ({ ...carta, id: indice }));
-            this.jokersPropiedad = data.gameState.purchased_jokers || [];
-            this.jokersTienda = data.gameState.jokers_store || [];
-            this.totalCartasUsadas = data.gameState.num_played_cards || this.manoJugador.length || 0;
-
-            this.gestorCartas.renderizarManoJugador();
-            this.gestorJokers.renderizarJokers();
-            this.actualizarUI();
-            return;
+    async cargarJuegoConObjetivos() {
+        // Cargar objetivos primero
+        try {
+            const cargado = await this.gestorObjetivos.cargarObjetivos();
+            if (!cargado) {
+                console.warn('No se cargaron objetivos, usando fallback');
+            }
+        } catch (error) {
+            console.warn('Error en cargarObjetivos:', error);
         }
+        
+        // Luego cargar el juego
+        await this.cargarJuego();
+    }
 
-        await this.generarManoJugador();
-    } configurarEventos() {
+    obtenerModoPartida() {
+        const params = new URLSearchParams(window.location.search);
+        this.modo = params.get('modo') || 'continuar';
+    }
+
+    async cargarJuego() {
+        try {
+            // Si el modo es "nueva", generar directamente sin intentar cargar
+            if (this.modo === 'nueva') {
+                await this.generarManoJugador();
+                return;
+            }
+
+            // Si es "continuar", intentar cargar la partida guardada
+            const res = await fetch('/game/obtener_ultima_partida', {
+                credentials: 'include'
+            });
+            
+            if (!res.ok) {
+                await this.generarManoJugador();
+                return;
+            }
+            
+            const data = await res.json();
+
+            if (data.success && data.has_saved_game) {
+                this.estadoJuego = data.gameState || {};
+                this.estadoJuego.score = this.estadoJuego.score || 0;
+                this.estadoJuego.hands = this.estadoJuego.hands || 4;
+                this.estadoJuego.discards = this.estadoJuego.discards || 4;
+                this.estadoJuego.money = this.estadoJuego.money || 0;
+                this.estadoJuego.blindTarget = this.estadoJuego.blindTarget || 300;
+                this.estadoJuego.chips = this.estadoJuego.chips || 0;
+                this.estadoJuego.mult = this.estadoJuego.mult || 0;
+                this.estadoJuego.round = this.estadoJuego.round || 1;
+                this.estadoJuego.shopOpened = this.estadoJuego.shopOpened || false;
+
+                this.manoJugador = (data.gameState.actual_hand || []).map((carta, indice) => ({ ...carta, id: indice }));
+                this.cartasJugadas = [];  // 🔧 Limpiar cartas jugadas al cargar (son del turno anterior)
+                this.jokersPropiedad = data.gameState.purchased_jokers || [];
+                this.jokersTienda = data.gameState.jokers_store || [];
+                this.totalCartasUsadas = data.gameState.num_played_cards || this.manoJugador.length || 0;
+
+                if (this.manoJugador.length === 0) {
+                    await this.generarManoJugador();
+                } else {
+                    this.gestorCartas.renderizarManoJugador();
+                    this.gestorJokers.renderizarJokers();
+                    this.actualizarUI();
+                }
+            } else {
+                await this.generarManoJugador();
+            }
+        } catch (error) {
+            console.error('Error cargando juego:', error);
+            await this.generarManoJugador();
+        }
+    }
+
+    configurarEventos() {
         document.getElementById('playCardsBtn').addEventListener('click', () => this.accionesJuego.jugarCartasSeleccionadas());
         document.getElementById('discardBtn').addEventListener('click', () => this.accionesJuego.descartarCartasSeleccionadas());
 
@@ -86,8 +139,9 @@ class Juego {
     }
 
     async generarManoJugador() {
-        const respuesta = await fetch('/inicializar_juego', {
+        const respuesta = await fetch('/game/inicializar_juego', {
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({})
         });
@@ -100,7 +154,26 @@ class Juego {
             this.totalCartasUsadas = this.manoJugador.length;
             this.gestorCartas.renderizarManoJugador();
             this.actualizarUI();
+            
+            await this.guardarPartidaAutomatica();
         }
+    }
+
+    async guardarPartidaAutomatica() {
+        await fetch('/game/guardar_partida', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                gameState: this.estadoJuego,
+                actual_hand: this.manoJugador,
+                played_cards: this.cartasJugadas,
+                num_played_cards: this.totalCartasUsadas,
+                purchased_jokers: this.jokersPropiedad,
+                open_store: this.estadoJuego.shopOpened || false,
+                jokers_store: this.jokersTienda
+            })
+        }).catch(() => { });
     }
 
     alternarSeleccionCarta(idCarta) {
