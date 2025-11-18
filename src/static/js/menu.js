@@ -33,6 +33,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     ];
     let indice = 0;
 
+    const precarga = [];
+    imagenes.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        precarga.push(img);
+    });
+
     fondo.style.backgroundImage = `url('${imagenes[indice]}')`;
     fondo.style.backgroundSize = 'cover';
     fondo.style.backgroundPosition = 'center';
