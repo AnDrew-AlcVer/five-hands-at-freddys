@@ -1,10 +1,61 @@
 let musicaJuego = null;
+let POWERUPS = [];
+
+async function cargarPowerups() {
+    try {
+        const res = await fetch('/static/config/powerups.json');
+        const data = await res.json();
+        POWERUPS = data.powerups;
+    } catch (error) {
+        console.error('Error cargando powerups:', error);
+    }
+}
+
+function obtenerPowerups() {
+    const powerups = JSON.parse(localStorage.getItem('powerupsSeleccionados')) || [];
+    return powerups;
+}
+
+function aplicarPowerups(gameState) {
+    const powerups = obtenerPowerups();
+    
+    powerups.forEach(powerup => {
+        switch(powerup.efecto.tipo) {
+            case 'dinero':
+                gameState.money = (gameState.money || 0) + powerup.efecto.valor;
+                break;
+            case 'descarte':
+                gameState.discards = (gameState.discards || 4) + powerup.efecto.valor;
+                break;
+            case 'jugada':
+                gameState.hands = (gameState.hands || 4) + powerup.efecto.valor;
+                break;
+            case 'multiplicador_dinero':
+                gameState.dinero_multiplicador = powerup.efecto.valor;
+                break;
+            case 'puntos':
+                gameState.puntos_bonus = (gameState.puntos_bonus || 0) + powerup.efecto.valor;
+                break;
+            case 'mano':
+                gameState.hands = (gameState.hands || 4) + powerup.efecto.valor;
+                break;
+            case 'critico':
+                gameState.mult_critico = powerup.efecto.valor;
+                break;
+            case 'regeneracion':
+                gameState.regeneracion = powerup.efecto.valor;
+                break;
+        }
+    });
+    
+    return gameState;
+}
 
 function iniciarMusicaJuego() {
     if (!musicaJuego) {
         musicaJuego = new Audio('/static/sound/ambiente.mp3');
         musicaJuego.loop = true;
-        musicaJuego.volume = 0.5;
+        musicaJuego.volume = obtenerVolumenMusica();
     }
 
     musicaJuego.play().catch(err => {
@@ -173,6 +224,7 @@ class Juego {
 
         if (resultado.success) {
             this.estadoJuego = resultado.gameState;
+            this.estadoJuego = aplicarPowerups(this.estadoJuego);
             this.manoJugador = resultado.hand.map((carta, indice) => ({ ...carta, id: indice }));
             this.totalCartasUsadas = this.manoJugador.length;
             this.gestorCartas.renderizarManoJugador();
@@ -279,8 +331,13 @@ class Juego {
 
 if (typeof window !== 'undefined') {
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => window.juego = new Juego());
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarPowerups();
+            window.juego = new Juego();
+        });
     } else {
-        window.juego = new Juego();
+        cargarPowerups().then(() => {
+            window.juego = new Juego();
+        });
     }
 }

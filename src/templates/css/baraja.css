@@ -1,0 +1,181 @@
+.baraja-page {
+    background: linear-gradient(135deg, #1a1a3e 0%, #2d1b69 100%);
+    min-height: 100vh;
+    color: #fff;
+}
+
+.baraja-title {
+    color: #ffaa44;
+    font-size: 3em;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 10px;
+}
+
+.baraja-subtitle {
+    color: #9b59b6;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.barajas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.baraja-card {
+    cursor: pointer;
+    perspective: 1000px;
+    height: 280px;
+}
+
+.baraja-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.baraja-card:hover .baraja-card-inner {
+    transform: rotateY(180deg);
+}
+
+.baraja-card.selected .baraja-card-inner {
+    transform: rotateY(180deg);
+}
+
+.baraja-card.selected .baraja-card-front,
+.baraja-card.selected .baraja-card-back {
+    border: 5px solid #2ecc71;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.6), inset 0 0 20px rgba(46, 204, 113, 0.3);
+}
+
+.baraja-card-front,
+.baraja-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    border: 3px solid #ffaa44;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #1a1a3e;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.baraja-card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #2d1b69 0%, #1a1a3e 100%);
+    padding: 20px;
+    text-align: center;
+    border-color: #f39c12;
+}
+
+.baraja-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 10px;
+}
+
+.baraja-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    text-align: center;
+}
+
+.baraja-overlay h5 {
+    color: #ffaa44;
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.baraja-descripcion {
+    color: #fff;
+    font-size: 0.95em;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.baraja-controls {
+    margin-top: 30px;
+}
+
+.btn-menu {
+    background: linear-gradient(45deg, #9b59b6, #8e44ad);
+    color: white;
+    border: 2px solid #ffaa44;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1em;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-menu:hover:not(:disabled) {
+    background: linear-gradient(45deg, #8e44ad, #7d3c98);
+    box-shadow: 0 0 20px rgba(255, 170, 68, 0.4);
+    transform: translateY(-2px);
+    color: white;
+}
+
+.btn-menu:disabled {
+    background: #555;
+    border-color: #888;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn-outline-light-50 {
+    color: #d4d4d4;
+    border-color: #d4d4d4;
+}
+
+.btn-outline-light-50:hover {
+    background: #d4d4d4;
+    border-color: #d4d4d4;
+    color: #1a1a3e;
+}
+
+@media (max-width: 768px) {
+    .barajas-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .baraja-card {
+        height: 220px;
+    }
+
+    .baraja-title {
+        font-size: 2em;
+    }
+
+    .baraja-subtitle {
+        font-size: 1em;
+    }
+
+    .baraja-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-menu {
+        width: 100%;
+    }
+}

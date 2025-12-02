@@ -1,8 +1,8 @@
 let sonidoGanar = new Audio('/static/sound/ganar.mp3');
 let sonidoPerder = new Audio('/static/sound/perder.mp3');
 
-sonidoGanar.volume = 0.7;
-sonidoPerder.volume = 1;
+sonidoGanar.volume = obtenerVolumenEfectos();
+sonidoPerder.volume = obtenerVolumenEfectos();
 
 class AccionesJuego {
     constructor(juego) {
@@ -49,6 +49,7 @@ class AccionesJuego {
         this.juego.gestorCartas.robarNuevasCartas(cartasJugar.length);
 
         if (resultado.roundWon) {
+            sonidoGanar.volume = obtenerVolumenEfectos();
             sonidoGanar.currentTime = 0;
             sonidoGanar.play();
             setTimeout(() => {
@@ -59,6 +60,7 @@ class AccionesJuego {
             const noLlegaPuntaje = this.juego.estadoJuego.score < this.juego.estadoJuego.blindTarget;
 
             if (sinManos && noLlegaPuntaje) {
+                sonidoPerder.volume = obtenerVolumenEfectos();
                 sonidoPerder.currentTime = 0;
                 sonidoPerder.play();
                 setTimeout(() => {
@@ -133,7 +135,7 @@ class AccionesJuego {
         setTimeout(() => {
             div.remove();
             if (isLastRound) {
-                window.location.href = '/menu';
+                this.borrarPartidaGuardada();
             } else {
                 this.avanzarRonda();
             }
@@ -192,6 +194,7 @@ class AccionesJuego {
 
     volver_al_menu() {
         pararMusicaJuego();
+        localStorage.removeItem('powerupsSeleccionados');
         window.location.href = '/menu';
     }
 
@@ -222,6 +225,8 @@ class AccionesJuego {
                 mult: 0,
                 money: moneyAcumulado  
             };
+            
+            this.juego.estadoJuego = aplicarPowerups(this.juego.estadoJuego);
             
             this.juego.manoJugador = resultado.hand.map((carta, indice) => ({
                 ...carta,

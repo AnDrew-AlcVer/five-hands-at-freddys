@@ -63,6 +63,12 @@ def juego():
         return render_template('html/login.html')
     return render_template('html/juego.html')
 
+@app.route('/baraja', methods=['GET'])
+def baraja():
+    if 'user_id' not in session:
+        return render_template('html/login.html')
+    return render_template('html/baraja.html')
+
 @app.route('/admin', methods=['GET'])
 def admin():
     return render_template('html/admin.html')
