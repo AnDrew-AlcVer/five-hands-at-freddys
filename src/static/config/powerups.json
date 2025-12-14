@@ -24,37 +24,37 @@
     {
       "id": "fnaf4",
       "nombre": "Five Nights At Freddy's 4",
-      "descripcion": "+25 monedas iniciales",
+      "descripcion": "Multiplica todas las ganancias por 2",
       "image": "/static/img/barajas/FNAF4.png",
-      "efecto": { "tipo": "dinero", "valor": 25 }
+      "efecto": {  "tipo": "multiplicador_dinero", "valor": 2  }
     },
     {
       "id": "sister_location",
       "nombre": "Sister Location",
-      "descripcion": "+2 descartes disponibles",
+      "descripcion": "+10 puntos extra por ronda",
       "image": "/static/img/barajas/SysLoc.png",
-      "efecto": { "tipo": "descarte", "valor": 2 }
+      "efecto": { "tipo": "puntos", "valor": 10 } 
     },
     {
       "id": "pizzeria_simulator",
       "nombre": "Pizzeria Simulator",
-      "descripcion": "+1 mano y +10 monedas",
+      "descripcion": "Multiplica tu puntaje de la ronda por 2",
       "image": "/static/img/barajas/PizSim.png",
-      "efecto": { "tipo": "mixto", "valor": { "mano": 1, "dinero": 10 } }
+      "efecto": { "tipo": "critico", "valor": 2 }
     },
     {
       "id": "help_wanted",
       "nombre": "Help Wanted",
-      "descripcion": "+20 monedas iniciales",
+      "descripcion": "Recupera 1 mano extra al final de la ronda",
       "image": "/static/img/barajas/HelWan.png",
       "efecto": { "tipo": "dinero", "valor": 20 }
     },
     {
       "id": "security_breach",
       "nombre": "Security Breach",
-      "descripcion": "+2 manos por ronda",
+      "descripcion": "+1 jugada extra por ronda",
       "image": "/static/img/barajas/SecBre.png",
-      "efecto": { "tipo": "mano", "valor": 2 }
+      "efecto": { "tipo": "jugada", "valor": 1 }
     }
   ]
 }
