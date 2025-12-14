@@ -218,6 +218,11 @@
     color: white;
 }
 
+.menu-btn.info-partida {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    color: white;
+}
+
 .menu-btn.options {
     background: linear-gradient(45deg, #f39c12, #e67e22);
     color: white;

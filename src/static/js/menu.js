@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     window.soundMenu = new Audio('/static/sound/menu.mp3');
     window.soundMenu.loop = true;
     window.soundMenu.volume = obtenerVolumenMusica();
-    window.soundMenu.play().catch(() => console.log('Esperando interacción del usuario para reproducir música'));
+    window.soundMenu.play().catch(() => {});
 
     const newGameBtn = document.querySelector('.btn.btn-menu.btn-lg');
     if (newGameBtn) {

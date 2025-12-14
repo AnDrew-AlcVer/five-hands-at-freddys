@@ -1,84 +1,25 @@
 {
   "powerups": [
     {
-      "id": "dinero",
-      "nombre": "💰 Dinero Extra",
-      "descripcion": "+$100 dinero inicial",
-      "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "dinero",
-        "valor": 100
-      }
-    },
-    {
       "id": "descarte",
       "nombre": "🔄 Descarte Extra",
       "descripcion": "+1 descarte disponible",
       "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "descarte",
-        "valor": 1
-      }
-    },
-    {
-      "id": "jugada",
-      "nombre": "🎮 Jugada Extra",
-      "descripcion": "+1 jugada disponible",
-      "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "jugada",
-        "valor": 1
-      }
-    },
-    {
-      "id": "multiplicador_dinero",
-      "nombre": "💎 Dinero Doble",
-      "descripcion": "x2 multiplicador de dinero",
-      "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "multiplicador_dinero",
-        "valor": 2
-      }
-    },
-    {
-      "id": "puntos",
-      "nombre": "⭐ Puntos Bonus",
-      "descripcion": "+50 puntos bonus",
-      "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "puntos",
-        "valor": 50
-      }
+      "efecto": { "tipo": "descarte", "valor": 1 }
     },
     {
       "id": "mano",
-      "nombre": "❤️ Vida Extra",
-      "descripcion": "+1 mano extra",
+      "nombre": "✋ Mano Extra",
+      "descripcion": "+1 mano disponible",
       "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "mano",
-        "valor": 1
-      }
+      "efecto": { "tipo": "mano", "valor": 1 }
     },
     {
-      "id": "critico",
-      "nombre": "⚡ Golpe Crítico",
-      "descripcion": "x1.5 multiplicador crítico",
+      "id": "dinero",
+      "nombre": "💰 Dinero Inicial",
+      "descripcion": "+15 monedas al empezar",
       "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "critico",
-        "valor": 1.5
-      }
-    },
-    {
-      "id": "regeneracion",
-      "nombre": "🔮 Regeneración",
-      "descripcion": "+1 descarte al ganar ronda",
-      "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": {
-        "tipo": "regeneracion",
-        "valor": 1
-      }
+      "efecto": { "tipo": "dinero", "valor": 15 }
     }
   ]
 }

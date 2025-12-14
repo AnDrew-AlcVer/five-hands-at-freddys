@@ -2,28 +2,53 @@
   "rondas": [
     {
       "numero": 1,
-      "puntos": 100,
-      "recompensa": 50
+      "puntos": 300,
+      "recompensa": 2
     },
     {
       "numero": 2,
-      "puntos": 250,
-      "recompensa": 100
+      "puntos": 500,
+      "recompensa": 2
     },
     {
       "numero": 3,
-      "puntos": 450,
-      "recompensa": 150
+      "puntos": 900,
+      "recompensa": 3
     },
     {
       "numero": 4,
-      "puntos": 700,
-      "recompensa": 200
+      "puntos": 1100,
+      "recompensa": 2
     },
     {
       "numero": 5,
-      "puntos": 1000,
-      "recompensa": 300
+      "puntos": 1500,
+      "recompensa": 2
+    },
+        {
+      "numero": 6,
+      "puntos": 1800,
+      "recompensa": 3
+    },
+        {
+      "numero": 7,
+      "puntos": 2200,
+      "recompensa": 2
+    },
+        {
+      "numero": 8,
+      "puntos": 2500,
+      "recompensa": 3
+    },
+        {
+      "numero": 9,
+      "puntos": 2800,
+      "recompensa": 3
+    },
+        {
+      "numero": 10,
+      "puntos": 3200,
+      "recompensa": 0
     }
   ],
   "mensajes": {

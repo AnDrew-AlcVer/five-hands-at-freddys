@@ -1,6 +1,11 @@
 let sonidoGanar = new Audio('/static/sound/ganar.mp3');
 let sonidoPerder = new Audio('/static/sound/perder.mp3');
 
+if (typeof window !== 'undefined') {
+    window.sonidoGanador = sonidoGanar; // mantener nombre usado en configuracion.js
+    window.sonidoPerder = sonidoPerder;
+}
+
 sonidoGanar.volume = obtenerVolumenEfectos();
 sonidoPerder.volume = obtenerVolumenEfectos();
 
@@ -25,7 +30,12 @@ class AccionesJuego {
                 },
                 body: JSON.stringify({
                     played_cards: cartasJugar,
-                    gameState: this.juego.estadoJuego
+                    gameState: this.juego.estadoJuego,
+                    actual_hand: this.juego.manoJugador,
+                    all_played_cards: this.juego.cartasJugadas,
+                    num_played_cards: this.juego.totalCartasUsadas,
+                    purchased_jokers: this.juego.jokersPropiedad,
+                    jokers_store: this.juego.jokersTienda
                 })
             });
 
@@ -47,6 +57,23 @@ class AccionesJuego {
         this.juego.limpiarSeleccion();
         this.juego.gestorCartas.removerCartasDeMano(cartasJugar);
         this.juego.gestorCartas.robarNuevasCartas(cartasJugar.length);
+        
+        setTimeout(() => {
+            fetch('/game/guardar_partida', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    gameState: this.juego.estadoJuego,
+                    actual_hand: this.juego.manoJugador,
+                    played_cards: this.juego.cartasJugadas,
+                    num_played_cards: this.juego.totalCartasUsadas,
+                    purchased_jokers: this.juego.jokersPropiedad,
+                    open_store: this.juego.estadoJuego.shopOpened || false,
+                    jokers_store: this.juego.jokersTienda
+                })
+            }).catch(() => { });
+        }, 100);
 
         if (resultado.roundWon) {
             sonidoGanar.volume = obtenerVolumenEfectos();
@@ -73,29 +100,13 @@ class AccionesJuego {
                 this.juego.gestorCartas.limpiarCartasJugadasConAnimacion();
             }, 2000);
         }
-
-        (async () => {
-            const r = await fetch('/game/guardar_partida', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    gameState: this.juego.estadoJuego,
-                    actual_hand: this.juego.manoJugador,
-                    played_cards: this.juego.cartasJugadas,
-                    num_played_cards: this.juego.totalCartasUsadas,
-                    purchased_jokers: this.juego.jokersPropiedad,
-                    open_store: this.juego.estadoJuego.shopOpened || false,
-                    jokers_store: this.juego.jokersTienda
-                })
-            }).catch(() => { });
-        })();
     }
 
     mostrarMensajeVictoria() {
         const currentRound = this.juego.estadoJuego.round || 1;
         const nextRound = currentRound + 1;
-        const isLastRound = nextRound > 5;
+        const totalRondas = this.juego.gestorObjetivos?.objetivos?.rondas?.length || 5;
+        const isLastRound = nextRound > totalRondas;
 
         const rondaActual = this.juego.gestorObjetivos?.objetivos?.rondas?.find(r => r.numero === currentRound);
         const recompensa = rondaActual?.recompensa || 0;
@@ -238,18 +249,23 @@ class AccionesJuego {
 
             this.juego.gestorCartas.limpiarAreaJuego();  
             this.juego.gestorCartas.renderizarManoJugador();
-
-            console.log('🔄 Nueva ronda inicializada:', {
-                round: this.juego.estadoJuego.round,
-                hands: this.juego.estadoJuego.hands,
-                discards: this.juego.estadoJuego.discards,
-                score: this.juego.estadoJuego.score,
-                money: this.juego.estadoJuego.money,
-                cartasDisponibles: this.juego.manoJugador.length
-            });
-            
             this.juego.actualizarUI();
             this.juego.actualizarBotonJugar();
+            
+            await fetch('/game/guardar_partida', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    gameState: this.juego.estadoJuego,
+                    actual_hand: this.juego.manoJugador,
+                    played_cards: this.juego.cartasJugadas,
+                    num_played_cards: this.juego.totalCartasUsadas,
+                    purchased_jokers: this.juego.jokersPropiedad,
+                    open_store: this.juego.estadoJuego.shopOpened || false,
+                    jokers_store: this.juego.jokersTienda
+                })
+            }).catch(() => { });
         }
     }
 
@@ -300,7 +316,12 @@ class AccionesJuego {
                 },
                 body: JSON.stringify({
                     discarded_cards: cartasDescartar,
-                    gameState: this.juego.estadoJuego
+                    gameState: this.juego.estadoJuego,
+                    actual_hand: this.juego.manoJugador,
+                    all_played_cards: this.juego.cartasJugadas,
+                    num_played_cards: this.juego.totalCartasUsadas,
+                    purchased_jokers: this.juego.jokersPropiedad,
+                    jokers_store: this.juego.jokersTienda
                 })
             });
 
@@ -312,6 +333,23 @@ class AccionesJuego {
                 this.juego.limpiarSeleccion();
                 this.juego.gestorCartas.removerCartasDeMano(cartasDescartar);
                 await this.juego.gestorCartas.robarNuevasCartasConAnimacion(cartasDescartar.length);
+                
+                setTimeout(() => {
+                    fetch('/game/guardar_partida', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            gameState: this.juego.estadoJuego,
+                            actual_hand: this.juego.manoJugador,
+                            played_cards: this.juego.cartasJugadas,
+                            num_played_cards: this.juego.totalCartasUsadas,
+                            purchased_jokers: this.juego.jokersPropiedad,
+                            open_store: this.juego.estadoJuego.shopOpened || false,
+                            jokers_store: this.juego.jokersTienda
+                        })
+                    }).catch(() => { });
+                }, 100);
             }
         } catch (error) {
             console.error('❌ Error de conexión con el servidor:', error);

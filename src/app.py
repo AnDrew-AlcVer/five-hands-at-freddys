@@ -69,10 +69,6 @@ def baraja():
         return render_template('html/login.html')
     return render_template('html/baraja.html')
 
-@app.route('/admin', methods=['GET'])
-def admin():
-    return render_template('html/admin.html')
-
 @app.route('/auth/login', methods=['POST'])
 def auth_login():
     return login()

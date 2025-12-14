@@ -59,7 +59,7 @@
                 </div>
                 
                 <div class="menu-buttons">
-                    <button class="menu-btn run-info">Info de Partida</button>
+                    <button class="menu-btn info-partida" onclick="abrirInfoPartida()">Info Partida</button>
                     <button class="menu-btn options" onclick="abrirConfiguracion()">⚙️ Audio</button>
                     <button class="menu-btn exit-game" id="exitGameBtn">Salir al Menú</button>
                 </div>
@@ -149,6 +149,7 @@
 
     <script src="{{ url_for('static', filename='js/sesion.js') }}"></script>
     <script src="{{ url_for('static', filename='js/configuracion.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/infoPartida.js') }}"></script>
     <script src="{{ url_for('static', filename='js/cartas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jokers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/objetivos.js') }}"></script>

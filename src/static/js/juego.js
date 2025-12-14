@@ -22,7 +22,10 @@ function aplicarPowerups(gameState) {
     powerups.forEach(powerup => {
         switch(powerup.efecto.tipo) {
             case 'dinero':
-                gameState.money = (gameState.money || 0) + powerup.efecto.valor;
+                if (!gameState.powerup_dinero_applied) {
+                    gameState.money = (gameState.money || 0) + powerup.efecto.valor;
+                    gameState.powerup_dinero_applied = true;
+                }
                 break;
             case 'descarte':
                 gameState.discards = (gameState.discards || 4) + powerup.efecto.valor;
@@ -56,11 +59,12 @@ function iniciarMusicaJuego() {
         musicaJuego = new Audio('/static/sound/ambiente.mp3');
         musicaJuego.loop = true;
         musicaJuego.volume = obtenerVolumenMusica();
+        if (typeof window !== 'undefined') {
+            window.musicaJuego = musicaJuego;
+        }
     }
 
-    musicaJuego.play().catch(err => {
-        console.log("Audio bloqueado:", err);
-    });
+    musicaJuego.play().catch(() => {});
 }
 
 function pararMusicaJuego() {
@@ -139,11 +143,22 @@ class Juego {
                 this.estadoJuego.hands = this.estadoJuego.hands || 4;
                 this.estadoJuego.discards = this.estadoJuego.discards || 4;
                 this.estadoJuego.money = this.estadoJuego.money || 0;
-                this.estadoJuego.blindTarget = this.estadoJuego.blindTarget || 300;
                 this.estadoJuego.chips = this.estadoJuego.chips || 0;
                 this.estadoJuego.mult = this.estadoJuego.mult || 0;
                 this.estadoJuego.round = this.estadoJuego.round || 1;
                 this.estadoJuego.shopOpened = this.estadoJuego.shopOpened || false;
+                
+                const rondaActual = this.gestorObjetivos?.objetivos?.rondas?.find(r => r.numero === this.estadoJuego.round);
+                this.estadoJuego.blindTarget = rondaActual?.puntos || this.estadoJuego.blindTarget || 300;
+
+                // Aplicar baraja/powerup si aún no se ha aplicado en esta ronda
+                const flagKey = `powerups_aplicados_round_${this.estadoJuego.round}`;
+                const aplicado = sessionStorage.getItem(flagKey);
+                const tienePowerup = (JSON.parse(localStorage.getItem('powerupsSeleccionados')) || []).length > 0;
+                if (tienePowerup && !aplicado) {
+                    this.estadoJuego = aplicarPowerups(this.estadoJuego);
+                    sessionStorage.setItem(flagKey, '1');
+                }
 
                 this.manoJugador = (data.gameState.actual_hand || []).map((carta, indice) => ({ ...carta, id: indice }));
                 this.cartasJugadas = [];  
