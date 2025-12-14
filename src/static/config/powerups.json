@@ -1,25 +1,60 @@
 {
   "powerups": [
     {
-      "id": "descarte",
-      "nombre": "🔄 Descarte Extra",
+      "id": "fnaf1",
+      "nombre": "Five Nights At Freddy's",
+      "descripcion": "+15 monedas iniciales",
+      "image": "/static/img/barajas/FNAF1.png",
+      "efecto": { "tipo": "dinero", "valor": 15 }
+    },
+    {
+      "id": "fnaf2",
+      "nombre": "Five Nights At Freddy's 2",
       "descripcion": "+1 descarte disponible",
-      "imagen": "/static/img/jokers/Freddy.png",
+      "image": "/static/img/barajas/FNAF2.png",
       "efecto": { "tipo": "descarte", "valor": 1 }
     },
     {
-      "id": "mano",
-      "nombre": "✋ Mano Extra",
-      "descripcion": "+1 mano disponible",
-      "imagen": "/static/img/jokers/Freddy.png",
+      "id": "fnaf3",
+      "nombre": "Five Nights At Freddy's 3",
+      "descripcion": "+1 mano por ronda",
+      "image": "/static/img/barajas/FNAF3.png",
       "efecto": { "tipo": "mano", "valor": 1 }
     },
     {
-      "id": "dinero",
-      "nombre": "💰 Dinero Inicial",
-      "descripcion": "+15 monedas al empezar",
-      "imagen": "/static/img/jokers/Freddy.png",
-      "efecto": { "tipo": "dinero", "valor": 15 }
+      "id": "fnaf4",
+      "nombre": "Five Nights At Freddy's 4",
+      "descripcion": "+25 monedas iniciales",
+      "image": "/static/img/barajas/FNAF4.png",
+      "efecto": { "tipo": "dinero", "valor": 25 }
+    },
+    {
+      "id": "sister_location",
+      "nombre": "Sister Location",
+      "descripcion": "+2 descartes disponibles",
+      "image": "/static/img/barajas/SysLoc.png",
+      "efecto": { "tipo": "descarte", "valor": 2 }
+    },
+    {
+      "id": "pizzeria_simulator",
+      "nombre": "Pizzeria Simulator",
+      "descripcion": "+1 mano y +10 monedas",
+      "image": "/static/img/barajas/PizSim.png",
+      "efecto": { "tipo": "mixto", "valor": { "mano": 1, "dinero": 10 } }
+    },
+    {
+      "id": "help_wanted",
+      "nombre": "Help Wanted",
+      "descripcion": "+20 monedas iniciales",
+      "image": "/static/img/barajas/HelWan.png",
+      "efecto": { "tipo": "dinero", "valor": 20 }
+    },
+    {
+      "id": "security_breach",
+      "nombre": "Security Breach",
+      "descripcion": "+2 manos por ronda",
+      "image": "/static/img/barajas/SecBre.png",
+      "efecto": { "tipo": "mano", "valor": 2 }
     }
   ]
 }

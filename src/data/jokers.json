@@ -51,7 +51,7 @@
         "price": 10,
         "effect": "chips",
         "value": 20,
-        "image": "/static/img/jokers/BalloonBoy.png"
+        "image": "/static/img/jokers/BB.png"
     },
     {
         "id": "mangle",
@@ -96,7 +96,7 @@
         "price": 19,
         "effect": "xmult",
         "value": 2,
-        "image": "/static/img/jokers/CircusBaby.png"
+        "image": "/static/img/jokers/Baby.png"
     },
     {
         "id": "music_man",
