@@ -73,6 +73,22 @@ function pararMusicaJuego() {
     }
 }
 
+function actualizarBackgroundPorManos(hands) {
+    document.body.classList.remove(
+        'bg-manos-normal',
+        'bg-manos-peligro',
+        'bg-manos-critico'
+    );
+
+    if (hands >= 3) {
+        document.body.classList.add('bg-manos-normal');
+    } else if (hands === 2) {
+        document.body.classList.add('bg-manos-peligro');
+    } else {
+        document.body.classList.add('bg-manos-critico');
+    }
+}
+
 class Juego {
     constructor() {
         this.cartasSeleccionadas = [];
@@ -341,6 +357,8 @@ class Juego {
             const progress = Math.min((this.estadoJuego.score / this.estadoJuego.blindTarget) * 100, 100);
             elementos.blindTarget.style.color = progress >= 100 ? '#2ecc71' : progress >= 75 ? '#f1c40f' : '#fff';
         }
+
+        actualizarBackgroundPorManos(this.estadoJuego.hands);
     }
 }
 
