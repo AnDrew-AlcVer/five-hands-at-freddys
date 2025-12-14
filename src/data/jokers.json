@@ -2,32 +2,10 @@
     {
         "id": "freddy",
         "name": "Freddy Fazbear",
-<<<<<<< HEAD
         "description": "El líder del escenario. Potencia las cartas Face.",
         "price": 15,
         "effect": "chips",
         "value": 30,
-=======
-        "description": "Si la mano contiene al menos una carta Face (J,Q,K), añade +20 fichas.",
-        "price": 15,
-        "effect": { "type": "face_chips_bonus", "value": 20 },
-        "image": "/static/img/jokers/Freddy.png"
-    },
-    {
-        "id": "bonnie",
-        "name": "Bonnie",
-        "description": "Cada carta de picas jugada da +1 mult.",
-        "price": 12,
-        "effect": { "type": "spade_mult_per_card", "value": 1 },
-        "image": "/static/img/jokers/Freddy.png"
-    },
-    {
-        "id": "chica",
-        "name": "Chica",
-        "description": "Cada carta de corazones jugada da +20 fichas.",
-        "price": 12,
-        "effect": { "type": "heart_chips_per_card", "value": 20 },
->>>>>>> 17becfe (Botón info partida)
         "image": "/static/img/jokers/Freddy.png"
     },
     {
@@ -51,39 +29,24 @@
     {
         "id": "springtrap",
         "name": "Springtrap",
-<<<<<<< HEAD
         "description": "El error activa su verdadero poder.",
         "price": 20,
         "effect": "xmult",
         "value": 2,
         "image": "/static/img/jokers/Springtrap.png"
-=======
-        "description": "Si la jugada incluye cartas 2–5, aplica x2 al mult final.",
-        "price": 20,
-        "effect": { "type": "low_cards_mult_double", "value": 2 },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     },
     {
         "id": "foxy",
         "name": "Foxy",
-<<<<<<< HEAD
         "description": "Ataca primero y sin avisar.",
         "price": 14,
         "effect": "mult",
         "value": 4,
         "image": "/static/img/jokers/Foxy.png"
-=======
-        "description": "La primera mano de cada ronda gana +2 mult extra.",
-        "price": 14,
-        "effect": { "type": "first_hand_mult_bonus", "value": 2 },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     },
     {
         "id": "balloon_boy",
         "name": "Balloon Boy",
-<<<<<<< HEAD
         "description": "Molesto pero rentable a largo plazo.",
         "price": 10,
         "effect": "chips",
@@ -107,66 +70,28 @@
         "effect": "xmult",
         "value": 2,
         "image": "/static/img/jokers/Puppet.png"
-=======
-        "description": "Cada 2 descartes → +20 fichas (se suman a la próxima jugada).",
-        "price": 10,
-        "effect": { "type": "chips_bonus_every_2_discards", "value": 20 },
-        "image": "/static/img/jokers/Freddy.png"
-    }
-    ,
-    {
-        "id": "mangle",
-        "name": "Mangle",
-        "description": "33% por carta de dar +1 mult.",
-        "price": 12,
-        "effect": { "type": "per_card_mult_chance", "value": 1, "chance": 0.33 },
-        "image": "/static/img/jokers/Freddy.png"
-    },
-    {
-        "id": "puppet",
-        "name": "Puppet",
-        "description": "Mano sin cartas repetidas → x2 mult (1 vez por ronda).",
-        "price": 18,
-        "effect": { "type": "no_duplicates_x2_once", "value": 2 },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     },
     {
         "id": "golden_freddy",
         "name": "Golden Freddy",
-<<<<<<< HEAD
         "description": "Una presencia impredecible y aterradora.",
         "price": 25,
         "effect": "special",
         "value": 0,
         "image": "/static/img/jokers/GoldenFreddy.png"
-=======
-        "description": "Multiplicador aleatorio x1.2 – x2.",
-        "price": 22,
-        "effect": { "type": "random_mult_range", "min": 1.2, "max": 2.0 },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     },
     {
         "id": "ballora",
         "name": "Ballora",
-<<<<<<< HEAD
         "description": "El ritmo perfecto crea armonía.",
         "price": 16,
         "effect": "chips",
         "value": 35,
         "image": "/static/img/jokers/Ballora.png"
-=======
-        "description": "Cartas consecutivas → +15 fichas.",
-        "price": 14,
-        "effect": { "type": "consecutive_chips_bonus", "value": 15 },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     },
     {
         "id": "circus_baby",
         "name": "Circus Baby",
-<<<<<<< HEAD
         "description": "Una sonrisa peligrosa.",
         "price": 19,
         "effect": "xmult",
@@ -181,26 +106,10 @@
         "effect": "chips",
         "value": 5,
         "image": "/static/img/jokers/MusicMan.png"
-=======
-        "description": "Mano con exactamente un par → x2 mult.",
-        "price": 16,
-        "effect": { "type": "exactly_one_pair_x2", "value": 2 },
-        "image": "/static/img/jokers/Freddy.png"
-    }
-    ,
-    {
-        "id": "music_man",
-        "name": "Music Man",
-        "description": "+1 ficha por cada carta jugada.",
-        "price": 10,
-        "effect": { "type": "chips_per_card", "value": 1 },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     },
     {
         "id": "phone_guy",
         "name": "Phone Guy",
-<<<<<<< HEAD
         "description": "Un consejo justo a tiempo.",
         "price": 13,
         "effect": "special",
@@ -215,35 +124,5 @@
         "effect": "copy",
         "value": 0,
         "image": "/static/img/jokers/Mimic.png"
-=======
-        "description": "Convierte una carta a J una vez por ronda.",
-        "price": 12,
-        "effect": { "type": "convert_one_to_J_once", "value": 1 },
-        "image": "/static/img/jokers/Freddy.png"
-    },
-    {
-        "id": "mimic",
-        "name": "Mimic",
-        "description": "Copia la habilidad del Joker más a la izquierda.",
-        "price": 20,
-        "effect": { "type": "mimic_leftmost", "value": 1 },
-        "image": "/static/img/jokers/Freddy.png"
-    }
-    ,
-    {
-        "id": "play_n_cards_bonus",
-        "name": "Stack Bonus",
-        "description": "Si juegas exactamente 3/4/5 cartas: +20/+30/+50 fichas.",
-        "price": 16,
-        "effect": {
-            "type": "chips_bonus_on_n_cards",
-            "thresholds": [
-                {"n": 3, "value": 20},
-                {"n": 4, "value": 30},
-                {"n": 5, "value": 50}
-            ]
-        },
-        "image": "/static/img/jokers/Freddy.png"
->>>>>>> 17becfe (Botón info partida)
     }
 ]
