@@ -2,43 +2,127 @@
     {
         "id": "freddy",
         "name": "Freddy Fazbear",
-        "description": "El animatrón principal",
+        "description": "El líder del escenario. Potencia las cartas Face.",
         "price": 15,
-        "effect": "multiplier",
-        "value": 2,
+        "effect": "chips",
+        "value": 30,
         "image": "/static/img/jokers/Freddy.png"
+    },
+    {
+        "id": "bonnie",
+        "name": "Bonnie",
+        "description": "La guitarra suena más fuerte con picas.",
+        "price": 12,
+        "effect": "mult",
+        "value": 1,
+        "image": "/static/img/jokers/Bonnie.png"
+    },
+    {
+        "id": "chica",
+        "name": "Chica",
+        "description": "Los corazones alimentan el marcador.",
+        "price": 12,
+        "effect": "chips",
+        "value": 25,
+        "image": "/static/img/jokers/Chica.png"
     },
     {
         "id": "springtrap",
         "name": "Springtrap",
-        "description": "El animatrón del miedo",
+        "description": "El error activa su verdadero poder.",
         "price": 20,
-        "effect": "bonus",
-        "value": 10,
+        "effect": "xmult",
+        "value": 2,
         "image": "/static/img/jokers/Springtrap.png"
     },
     {
-        "id": "joker3",
-        "name": "Joker Fortuna",
-        "description": "+1 descarte",
-        "price": 6,
-        "effect": "extra_discard",
-        "value": 1
+        "id": "foxy",
+        "name": "Foxy",
+        "description": "Ataca primero y sin avisar.",
+        "price": 14,
+        "effect": "mult",
+        "value": 4,
+        "image": "/static/img/jokers/Foxy.png"
     },
     {
-        "id": "joker4",
-        "name": "Joker Estratega",
-        "description": "+1 mano",
-        "price": 8,
-        "effect": "extra_hand",
-        "value": 1
-    },
-    {
-        "id": "joker5",
-        "name": "Joker Dorado",
-        "description": "+50% dinero por ronda",
+        "id": "balloon_boy",
+        "name": "Balloon Boy",
+        "description": "Molesto pero rentable a largo plazo.",
         "price": 10,
-        "effect": "money_multiplier",
-        "value": 1.5
+        "effect": "chips",
+        "value": 20,
+        "image": "/static/img/jokers/BalloonBoy.png"
+    },
+    {
+        "id": "mangle",
+        "name": "Mangle",
+        "description": "Caos absoluto en cada jugada.",
+        "price": 18,
+        "effect": "special",
+        "value": 33,
+        "image": "/static/img/jokers/Mangle.png"
+    },
+    {
+        "id": "puppet",
+        "name": "The Puppet",
+        "description": "Recompensa las manos puras.",
+        "price": 22,
+        "effect": "xmult",
+        "value": 2,
+        "image": "/static/img/jokers/Puppet.png"
+    },
+    {
+        "id": "golden_freddy",
+        "name": "Golden Freddy",
+        "description": "Una presencia impredecible y aterradora.",
+        "price": 25,
+        "effect": "special",
+        "value": 0,
+        "image": "/static/img/jokers/GoldenFreddy.png"
+    },
+    {
+        "id": "ballora",
+        "name": "Ballora",
+        "description": "El ritmo perfecto crea armonía.",
+        "price": 16,
+        "effect": "chips",
+        "value": 35,
+        "image": "/static/img/jokers/Ballora.png"
+    },
+    {
+        "id": "circus_baby",
+        "name": "Circus Baby",
+        "description": "Una sonrisa peligrosa.",
+        "price": 19,
+        "effect": "xmult",
+        "value": 2,
+        "image": "/static/img/jokers/CircusBaby.png"
+    },
+    {
+        "id": "music_man",
+        "name": "Music Man",
+        "description": "Cada carta es parte del concierto.",
+        "price": 17,
+        "effect": "chips",
+        "value": 5,
+        "image": "/static/img/jokers/MusicMan.png"
+    },
+    {
+        "id": "phone_guy",
+        "name": "Phone Guy",
+        "description": "Un consejo justo a tiempo.",
+        "price": 13,
+        "effect": "special",
+        "value": 0,
+        "image": "/static/img/jokers/PhoneGuy.png"
+    },
+    {
+        "id": "mimic",
+        "name": "The Mimic",
+        "description": "Imita al Joker situado a su izquierda.",
+        "price": 24,
+        "effect": "copy",
+        "value": 0,
+        "image": "/static/img/jokers/Mimic.png"
     }
 ]
