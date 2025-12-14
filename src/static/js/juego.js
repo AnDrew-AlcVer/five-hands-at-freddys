@@ -74,18 +74,24 @@ function pararMusicaJuego() {
 }
 
 function actualizarBackgroundPorManos(hands) {
-    document.body.classList.remove(
-        'bg-manos-normal',
-        'bg-manos-peligro',
-        'bg-manos-critico'
-    );
+    const fondo = document.body;
 
-    if (hands >= 3) {
-        document.body.classList.add('bg-manos-normal');
-    } else if (hands === 2) {
-        document.body.classList.add('bg-manos-peligro');
-    } else {
-        document.body.classList.add('bg-manos-critico');
+    const fondos = {
+        normal: '/static/img/juego/bg_normal.png',
+        peligro: '/static/img/juego/bg_peligro.png',
+        critico: '/static/img/juego/bg_critico.png'
+    };
+
+    let nuevaImagen = fondos.normal;
+    if (hands <= 1) nuevaImagen = fondos.critico;
+    else if (hands === 2) nuevaImagen = fondos.peligro;
+
+    if (!fondo.dataset.currentBg || fondo.dataset.currentBg !== nuevaImagen) {
+        fondo.style.transition = 'background-image 0.6s ease-in-out';
+        fondo.style.backgroundImage = `url('${nuevaImagen}')`;
+        fondo.style.backgroundSize = 'cover';
+        fondo.style.backgroundPosition = 'center';
+        fondo.dataset.currentBg = nuevaImagen;
     }
 }
 
