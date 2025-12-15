@@ -18,9 +18,9 @@ function obtenerPowerups() {
 
 function aplicarPowerups(gameState) {
     const powerups = obtenerPowerups();
-    
+
     powerups.forEach(powerup => {
-        switch(powerup.efecto.tipo) {
+        switch (powerup.efecto.tipo) {
             case 'dinero':
                 if (!gameState.powerup_dinero_applied) {
                     gameState.money = (gameState.money || 0) + powerup.efecto.valor;
@@ -50,7 +50,7 @@ function aplicarPowerups(gameState) {
                 break;
         }
     });
-    
+
     return gameState;
 }
 
@@ -64,7 +64,7 @@ function iniciarMusicaJuego() {
         }
     }
 
-    musicaJuego.play().catch(() => {});
+    musicaJuego.play().catch(() => { });
 }
 
 function pararMusicaJuego() {
@@ -116,13 +116,13 @@ class Juego {
 
         this.cargarJuegoConObjetivos().catch(error => {
             console.error('Error en cargarJuegoConObjetivos:', error);
-            
+
             this.cargarJuego();
         });
     }
 
     async cargarJuegoConObjetivos() {
-        
+
         try {
             const cargado = await this.gestorObjetivos.cargarObjetivos();
             if (!cargado) {
@@ -142,7 +142,7 @@ class Juego {
 
     async cargarJuego() {
         try {
-            
+
             if (this.modo === 'nueva') {
                 await this.generarManoJugador();
                 return;
@@ -151,12 +151,12 @@ class Juego {
             const res = await fetch('/game/obtener_ultima_partida', {
                 credentials: 'include'
             });
-            
+
             if (!res.ok) {
                 await this.generarManoJugador();
                 return;
             }
-            
+
             const data = await res.json();
 
             if (data.success && data.has_saved_game) {
@@ -169,7 +169,7 @@ class Juego {
                 this.estadoJuego.mult = this.estadoJuego.mult || 0;
                 this.estadoJuego.round = this.estadoJuego.round || 1;
                 this.estadoJuego.shopOpened = this.estadoJuego.shopOpened || false;
-                
+
                 const rondaActual = this.gestorObjetivos?.objetivos?.rondas?.find(r => r.numero === this.estadoJuego.round);
                 this.estadoJuego.blindTarget = rondaActual?.puntos || this.estadoJuego.blindTarget || 300;
 
@@ -183,10 +183,10 @@ class Juego {
                 }
 
                 this.manoJugador = (data.gameState.actual_hand || []).map((carta, indice) => ({ ...carta, id: indice }));
-                this.cartasJugadas = [];  
+                this.cartasJugadas = [];
                 this.jokersPropiedad = data.gameState.purchased_jokers || [];
                 this.jokersTienda = data.gameState.jokers_store || [];
-                
+
                 this.totalCartasUsadas = this.manoJugador.length;
 
                 if (this.manoJugador.length < 9 && this.manoJugador.length > 0) {
@@ -201,10 +201,10 @@ class Juego {
                             currentHand: this.manoJugador
                         })
                     });
-                    
+
                     const dataRobar = await resRobar.json();
                     if (dataRobar.success && dataRobar.cards) {
-                        
+
                         const nuevasCartas = dataRobar.cards.map((carta, idx) => ({
                             ...carta,
                             id: this.manoJugador.length + idx
@@ -266,7 +266,7 @@ class Juego {
             this.totalCartasUsadas = this.manoJugador.length;
             this.gestorCartas.renderizarManoJugador();
             this.actualizarUI();
-            
+
             await this.guardarPartidaAutomatica();
         }
     }
@@ -365,6 +365,17 @@ class Juego {
         }
 
         actualizarBackgroundPorManos(this.estadoJuego.hands);
+
+        const deckCard = document.querySelector('.deck-card');
+        if (deckCard) {
+            const powerupSeleccionado = JSON.parse(localStorage.getItem('powerupsSeleccionados'))?.[0];
+
+            if (powerupSeleccionado?.image) {
+                deckCard.style.backgroundImage = `url('${powerupSeleccionado.image}')`;
+            } else {
+                deckCard.style.backgroundImage = '';
+            }
+        }
     }
 }
 

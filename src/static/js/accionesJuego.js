@@ -57,7 +57,7 @@ class AccionesJuego {
         this.juego.limpiarSeleccion();
         this.juego.gestorCartas.removerCartasDeMano(cartasJugar);
         this.juego.gestorCartas.robarNuevasCartas(cartasJugar.length);
-        
+
         setTimeout(() => {
             fetch('/game/guardar_partida', {
                 method: 'POST',
@@ -90,9 +90,13 @@ class AccionesJuego {
                 sonidoPerder.volume = obtenerVolumenEfectos();
                 sonidoPerder.currentTime = 0;
                 sonidoPerder.play();
+
+                this.mostrarJumpscare();
+
                 setTimeout(() => {
                     this.mostrarMensajeDerrota();
                 }, 2000);
+
                 return;
             }
 
@@ -112,11 +116,11 @@ class AccionesJuego {
         const recompensa = rondaActual?.recompensa || 0;
 
         this.juego.estadoJuego.money = (this.juego.estadoJuego.money || 0) + recompensa;
-        
-        const mensaje = isLastRound 
+
+        const mensaje = isLastRound
             ? (this.juego.gestorObjetivos?.objetivos?.mensajes?.victoria_final || '🏆 ¡GANASTE LAS CINCO NOCHES! 🏆')
             : (this.juego.gestorObjetivos?.objetivos?.mensajes?.victoria || '🎉 ¡Ronda superada! 🎉');
-        
+
         const div = document.createElement('div');
         div.style.cssText = `
             position: fixed;
@@ -153,10 +157,41 @@ class AccionesJuego {
         }, 3000);
     }
 
+    mostrarJumpscare() {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 20000;
+    `;
+
+        const gif = document.createElement('img');
+        gif.src = '/static/img/juego/jumpscare.gif';
+        gif.style.cssText = `
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    `;
+
+        overlay.appendChild(gif);
+        document.body.appendChild(overlay);
+
+        setTimeout(() => {
+            overlay.remove();
+        }, 2000);
+    }
+
     mostrarMensajeDerrota() {
-        
+
         const mensaje_derrota = this.juego.gestorObjetivos?.objetivos?.mensajes?.derrota || '💀 ¡Ronda fallida! 💀';
-        
+
         const div = document.createElement('div');
         div.style.cssText = `
             position: fixed;
@@ -184,7 +219,7 @@ class AccionesJuego {
 
         setTimeout(() => {
             div.remove();
-            
+
             this.borrarPartidaGuardada();
         }, 4000);
     }
@@ -211,22 +246,22 @@ class AccionesJuego {
 
     async avanzarRonda() {
         const nextRound = (this.juego.estadoJuego.round || 1) + 1;
-        const moneyAcumulado = this.juego.estadoJuego.money || 0;  
+        const moneyAcumulado = this.juego.estadoJuego.money || 0;
 
         const respuesta = await fetch('/game/inicializar_juego', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 round: nextRound,
-                played_cards: this.juego.cartasJugadas,  
-                current_hand: this.juego.manoJugador     
+                played_cards: this.juego.cartasJugadas,
+                current_hand: this.juego.manoJugador
             })
         });
 
         const resultado = await respuesta.json();
         if (resultado.success) {
-            
+
             this.juego.estadoJuego = {
                 ...resultado.gameState,
                 hands: 4,
@@ -234,11 +269,11 @@ class AccionesJuego {
                 score: 0,
                 chips: 0,
                 mult: 0,
-                money: moneyAcumulado  
+                money: moneyAcumulado
             };
-            
+
             this.juego.estadoJuego = aplicarPowerups(this.juego.estadoJuego);
-            
+
             this.juego.manoJugador = resultado.hand.map((carta, indice) => ({
                 ...carta,
                 id: indice
@@ -247,11 +282,11 @@ class AccionesJuego {
             this.juego.cartasJugadas = [];
             this.juego.cartasSeleccionadas = [];
 
-            this.juego.gestorCartas.limpiarAreaJuego();  
+            this.juego.gestorCartas.limpiarAreaJuego();
             this.juego.gestorCartas.renderizarManoJugador();
             this.juego.actualizarUI();
             this.juego.actualizarBotonJugar();
-            
+
             await fetch('/game/guardar_partida', {
                 method: 'POST',
                 credentials: 'include',
@@ -333,7 +368,7 @@ class AccionesJuego {
                 this.juego.limpiarSeleccion();
                 this.juego.gestorCartas.removerCartasDeMano(cartasDescartar);
                 await this.juego.gestorCartas.robarNuevasCartasConAnimacion(cartasDescartar.length);
-                
+
                 setTimeout(() => {
                     fetch('/game/guardar_partida', {
                         method: 'POST',

@@ -45,9 +45,9 @@
     {
       "id": "help_wanted",
       "nombre": "Help Wanted",
-      "descripcion": "Recupera 1 mano extra al final de la ronda",
+      "descripcion": "+1 joker extra en la tienda",
       "image": "/static/img/barajas/HelWan.png",
-      "efecto": { "tipo": "dinero", "valor": 20 }
+      "efecto": { "tipo": "dinero", "valor": 0 }
     },
     {
       "id": "security_breach",

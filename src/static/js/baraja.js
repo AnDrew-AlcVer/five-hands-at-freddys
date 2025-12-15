@@ -24,7 +24,7 @@ function renderizarBarajas() {
         div.innerHTML = `
             <div class="baraja-card-inner">
                 <div class="baraja-card-front">
-                    <img src="${powerup.imagen}" alt="${powerup.nombre}" class="baraja-imagen">
+                    <img src="${powerup.image}" alt="${powerup.nombre}" class="baraja-imagen">
                     <div class="baraja-overlay">
                         <h5>${powerup.nombre}</h5>
                     </div>
