@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: balatro-night-app
+    ports:
+      - "80:80"
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-production}
+    volumes:
+      - ./db:/app/src/db
+    restart: unless-stopped

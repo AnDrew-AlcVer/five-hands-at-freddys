@@ -3,9 +3,14 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import sys
+import secrets
 
 load_dotenv()
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'db'))
+
+src_path = os.path.dirname(os.path.abspath(__file__))
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
+sys.path.insert(0, os.path.join(src_path, 'db'))
 
 try:
     from db.crear_bd import crear_base_datos
@@ -21,7 +26,8 @@ from py.juego import (inicializar_juego, robar_cartas, jugar_cartas,
                       obtener_objetivos, validar_ronda, borrar_partida_guardada)
 
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY', 'clave_por_defecto_no_usar_en_produccion')
+# Generar SECRET_KEY aleatoria si no está en el .env
+app.secret_key = os.getenv('SECRET_KEY') or secrets.token_hex(32)
 CORS(app, supports_credentials=True)
 
 init_db(app)
