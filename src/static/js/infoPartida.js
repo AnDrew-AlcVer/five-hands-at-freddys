@@ -73,25 +73,126 @@ function abrirInfoPartida() {
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <h3 style="color: #f39c12; margin-top: 0; margin-bottom: 10px; font-size: 16px;">Qué hacen los Jokers</h3>
-                        <p style="margin: 8px 0; line-height: 1.6; color: #ddd;">Los Jokers son potenciadores que compras en la tienda:</p>
-                        <ul style="margin: 10px 0; padding-left: 20px; font-size: 0.9em;">
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Freddy:</strong> Si hay Face (J, Q, K), +20 fichas.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Bonnie:</strong> Cada pica que juegas añade +1 multiplicador.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Chica:</strong> Cada corazón que juegas añade +20 fichas.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Springtrap:</strong> Si juegas cartas bajas (2–5), multiplica ×2 el multiplicador.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Foxy:</strong> La primera mano de la ronda suma +2 multiplicador.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Balloon Boy:</strong> Cada 2 descartes acumulan +20 fichas para la próxima jugada.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Mangle:</strong> 33% de probabilidad por carta de sumar +1 multiplicador.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Puppet:</strong> Si no hay cartas repetidas, multiplica ×2 el multiplicador (1 vez por ronda).</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Golden Freddy:</strong> Multiplica el multiplicador por un valor aleatorio (×1.2 a ×2).</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Ballora:</strong> Cartas consecutivas suman +15 fichas.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Circus Baby:</strong> Si hay exactamente una pareja, multiplica ×2 el multiplicador.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Music Man:</strong> Cada carta jugada suma +1 ficha.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Phone Guy:</strong> Una carta se convierte en J una vez por ronda.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Mimic:</strong> Copia el efecto del Joker más a la izquierda.</li>
-                            <li style="margin: 6px 0; line-height: 1.5; color: #ddd;"><strong>Stack Bonus:</strong> Jugar exactamente 3/4/5 cartas suma +20/+30/+50 fichas.</li>
-                        </ul>
+                        <h3 style="color: #f39c12; margin-top: 0; margin-bottom: 10px; font-size: 16px;">Lista de Jokers</h3>
+                        <p style="margin: 8px 0; line-height: 1.6; color: #ddd;">Los Jokers son potenciadores especiales que compras en la tienda. Puedes tener hasta 5 activos simultáneamente.</p>
+                        
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <h4 style="color: #e74c3c; margin: 0 0 10px 0; font-size: 14px;">JOKERS DE FICHAS</h4>
+                            <ul style="margin: 8px 0; padding-left: 20px; font-size: 0.85em;">
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Freddy Fazbear</strong> ($15)<br>
+                                    Si juegas cartas Face (J, Q, K), suma +30 fichas.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Chica</strong> ($12)<br>
+                                    Cada corazón jugado suma +25 fichas.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Balloon Boy</strong> ($10)<br>
+                                    Cada 2 descartes acumula +20 fichas para la próxima jugada.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Ballora</strong> ($16)<br>
+                                    Por cada par de cartas consecutivas suma +35 fichas.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Music Man</strong> ($17)<br>
+                                    Cada carta jugada suma +5 fichas.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <h4 style="color: #3498db; margin: 0 0 10px 0; font-size: 14px;">JOKERS DE MULTIPLICADOR</h4>
+                            <ul style="margin: 8px 0; padding-left: 20px; font-size: 0.85em;">
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Bonnie</strong> ($12)<br>
+                                    Cada pica jugada suma +1 al multiplicador.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Foxy</strong> ($14)<br>
+                                    La primera mano de la ronda suma +4 al multiplicador.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Mangle</strong> ($18)<br>
+                                    33% de probabilidad por carta de sumar +1 al multiplicador.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <h4 style="color: #9b59b6; margin: 0 0 10px 0; font-size: 14px;">JOKERS MULTIPLICADORES</h4>
+                            <ul style="margin: 8px 0; padding-left: 20px; font-size: 0.85em;">
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Springtrap</strong> ($20)<br>
+                                    Si juegas cartas bajas (2, 3, 4, 5), multiplica x2 el multiplicador.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">The Puppet</strong> ($22)<br>
+                                    Si no hay cartas repetidas, multiplica x2 el multiplicador (1 vez por ronda).
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Circus Baby</strong> ($19)<br>
+                                    Si hay exactamente una pareja, multiplica x2 el multiplicador.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <h4 style="color: #f39c12; margin: 0 0 10px 0; font-size: 14px;">JOKERS ESPECIALES</h4>
+                            <ul style="margin: 8px 0; padding-left: 20px; font-size: 0.85em;">
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Golden Freddy</strong> ($25)<br>
+                                    Multiplica el multiplicador por un valor aleatorio entre x1.2 y x2.0.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Phone Guy</strong> ($13)<br>
+                                    Una vez por ronda, convierte una carta en J.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">The Mimic</strong> ($24)<br>
+                                    Copia el efecto del Joker más a la izquierda.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #f39c12; margin-top: 0; margin-bottom: 10px; font-size: 16px;">Sistema de Powerups</h3>
+                        <p style="margin: 8px 0; line-height: 1.6; color: #ddd;">Antes de empezar una partida, puedes seleccionar una baraja que te dará ventajas especiales.</p>
+                        
+                        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <ul style="margin: 8px 0; padding-left: 20px; font-size: 0.85em;">
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Five Nights At Freddy's (FNAF1)</strong><br>
+                                    +15 monedas extra solo en la primera ronda.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Five Nights At Freddy's 2 (FNAF2)</strong><br>
+                                    +1 descarte disponible por ronda.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Five Nights At Freddy's 3 (FNAF3)</strong><br>
+                                    +1 mano disponible por ronda.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Five Nights At Freddy's 4 (FNAF4)</strong><br>
+                                    Multiplica x2 todas las recompensas de dinero al ganar rondas.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Sister Location</strong><br>
+                                    +10 puntos extra en cada jugada de cartas.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Pizzeria Simulator</strong><br>
+                                    Multiplica x2 el puntaje de cada jugada.
+                                </li>
+                                <li style="margin: 6px 0; line-height: 1.5; color: #ddd;">
+                                    <strong style="color: #ffaa44;">Security Breach</strong><br>
+                                    +1 jugada extra por ronda.
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div style="margin-bottom: 20px;">

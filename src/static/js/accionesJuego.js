@@ -113,7 +113,13 @@ class AccionesJuego {
         const isLastRound = nextRound > totalRondas;
 
         const rondaActual = this.juego.gestorObjetivos?.objetivos?.rondas?.find(r => r.numero === currentRound);
-        const recompensa = rondaActual?.recompensa || 0;
+        let recompensa = rondaActual?.recompensa || 0;
+        
+        // Aplicar multiplicador de dinero (FNAF 4 powerup)
+        const multiplicadorDinero = this.juego.estadoJuego.dinero_multiplicador || 1;
+        if (multiplicadorDinero > 1) {
+            recompensa = Math.floor(recompensa * multiplicadorDinero);
+        }
 
         this.juego.estadoJuego.money = (this.juego.estadoJuego.money || 0) + recompensa;
 
@@ -138,11 +144,15 @@ class AccionesJuego {
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             border: 3px solid #fff;
         `;
+        const mensajeDinero = multiplicadorDinero > 1 
+            ? `💰 ¡Ganaste $${recompensa}! (x${multiplicadorDinero})`
+            : `💰 ¡Ganaste $${recompensa}!`;
+        
         div.innerHTML = `
             ${mensaje}<br>
             <span style="font-size: 0.5em; display: block; margin-top: 15px;">
                 Puntuación: ${this.juego.estadoJuego.score} / ${this.juego.estadoJuego.blindTarget}<br>
-                💰 ¡Ganaste $${recompensa}!
+                ${mensajeDinero}
             </span>
         `;
         document.body.appendChild(div);

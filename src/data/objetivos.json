@@ -3,47 +3,47 @@
     {
       "numero": 1,
       "puntos": 300,
-      "recompensa": 2
+      "recompensa": 5
     },
     {
       "numero": 2,
       "puntos": 500,
-      "recompensa": 2
+      "recompensa": 5
     },
     {
       "numero": 3,
       "puntos": 900,
-      "recompensa": 3
+      "recompensa": 7
     },
     {
       "numero": 4,
       "puntos": 1100,
-      "recompensa": 2
+      "recompensa": 7
     },
     {
       "numero": 5,
       "puntos": 1500,
-      "recompensa": 2
+      "recompensa": 9
     },
         {
       "numero": 6,
       "puntos": 1800,
-      "recompensa": 3
+      "recompensa": 9
     },
         {
       "numero": 7,
       "puntos": 2200,
-      "recompensa": 2
+      "recompensa": 12
     },
         {
       "numero": 8,
       "puntos": 2500,
-      "recompensa": 3
+      "recompensa": 12
     },
         {
       "numero": 9,
       "puntos": 2800,
-      "recompensa": 3
+      "recompensa": 12
     },
         {
       "numero": 10,
@@ -53,7 +53,7 @@
   ],
   "mensajes": {
     "victoria": "¡Ronda superada!",
-    "derrota": "💀 ¡Ronda fallida!",
-    "victoria_final": "🏆 ¡GANASTE LAS CINCO NOCHES CON EDUARDO!"
+    "derrota": "💀 ¡Ronda fallida! 💀",
+    "victoria_final": "🏆 ¡GANASTE LAS CINCO NOCHES CON EDUARDO! 🏆"
   }
 }

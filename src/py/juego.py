@@ -283,7 +283,21 @@ def _apply_jokers_to_play(cards, game_state, purchased_jokers):
 
     game_state['chips'] = chips
     game_state['mult'] = base_mult
-    game_state['score'] = game_state.get('score', 0) + chips * base_mult
+    
+    # Calcular puntos de esta jugada
+    play_score = chips * base_mult
+    
+    # Aplicar bonificación de puntos (Sister Location powerup)
+    puntos_bonus = game_state.get('puntos_bonus', 0)
+    if puntos_bonus > 0:
+        play_score += puntos_bonus
+    
+    # Aplicar multiplicador crítico (Pizzeria Simulator powerup)
+    mult_critico = game_state.get('mult_critico', 1)
+    if mult_critico > 1:
+        play_score = int(play_score * mult_critico)
+    
+    game_state['score'] = game_state.get('score', 0) + play_score
     return game_state
 
 def jugar_cartas():

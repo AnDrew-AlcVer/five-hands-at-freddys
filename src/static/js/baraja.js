@@ -46,8 +46,11 @@ function togglePowerup(powerup) {
     
     if (index >= 0) {
         powerupsSeleccionados = [];
+        localStorage.removeItem('barajaSeleccionada');
     } else {
         powerupsSeleccionados = [powerup];
+        // Guardar el id de la baraja seleccionada
+        localStorage.setItem('barajaSeleccionada', powerup.id);
     }
 
     localStorage.setItem('powerupsSeleccionados', JSON.stringify(powerupsSeleccionados));

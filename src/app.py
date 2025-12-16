@@ -26,8 +26,15 @@ from py.juego import (inicializar_juego, robar_cartas, jugar_cartas,
                       obtener_objetivos, validar_ronda, borrar_partida_guardada)
 
 app = Flask(__name__)
-# Generar SECRET_KEY aleatoria si no está en el .env
+# IMPORTANTE: Con Gunicorn multi-worker, la SECRET_KEY DEBE estar en .env
+# Si no existe, se genera una aleatoria (pero solo funciona con 1 worker)
 app.secret_key = os.getenv('SECRET_KEY') or secrets.token_hex(32)
+
+# Configuración de sesión
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 1 hora
+
 CORS(app, supports_credentials=True)
 
 init_db(app)

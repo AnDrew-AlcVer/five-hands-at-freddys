@@ -35,6 +35,7 @@ def login():
         if not verify_password(user.password_hash, password):
             return jsonify({'success': False, 'message': 'Contraseña incorrecta'}), 401
 
+        session.permanent = True  # Hacer la sesión permanente
         session['user_id'] = user.id
         session['username'] = user.username
         session['admin'] = user.admin
@@ -109,6 +110,7 @@ def register():
         db.session.add(new_leaderboard)
         db.session.commit()
 
+        session.permanent = True  # Hacer la sesión permanente
         session['user_id'] = new_user.id
         session['username'] = new_user.username
         session['admin'] = new_user.admin

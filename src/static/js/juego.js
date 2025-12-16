@@ -22,7 +22,9 @@ function aplicarPowerups(gameState) {
     powerups.forEach(powerup => {
         switch (powerup.efecto.tipo) {
             case 'dinero':
-                if (!gameState.powerup_dinero_applied) {
+                // Solo aplicar el bonus de dinero en la ronda 1
+                const rondaActual = gameState.round || 1;
+                if (rondaActual === 1 && !gameState.powerup_dinero_applied) {
                     gameState.money = (gameState.money || 0) + powerup.efecto.valor;
                     gameState.powerup_dinero_applied = true;
                 }
@@ -52,6 +54,15 @@ function aplicarPowerups(gameState) {
     });
 
     return gameState;
+}
+
+function cargarImagenBaraja() {
+    const powerupsSeleccionados = JSON.parse(localStorage.getItem('powerupsSeleccionados')) || [];
+    const deckCard = document.getElementById('deckCard');
+    
+    if (powerupsSeleccionados.length > 0 && powerupsSeleccionados[0].image && deckCard) {
+        deckCard.style.backgroundImage = `url('${powerupsSeleccionados[0].image}')`;
+    }
 }
 
 function iniciarMusicaJuego() {
@@ -113,6 +124,7 @@ class Juego {
         this.obtenerModoPartida();
         this.configurarEventos();
         iniciarMusicaJuego();
+        cargarImagenBaraja();
 
         this.cargarJuegoConObjetivos().catch(error => {
             console.error('Error en cargarJuegoConObjetivos:', error);
